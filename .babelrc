@@ -1,0 +1,31 @@
+{
+  "presets": [
+    "@babel/env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "api": "./src/api",
+          "asset": "./src/asset",
+          "font": "./src/asset/font",
+          "images": "./src/asset/images",
+          "components": "./src/components",
+          "hooks": "./src/hooks",
+          "pages": "./src/pages",
+          "store": "./src/store",
+          "style": "./src/style",
+          "utils": "./src/utils"
+        }
+      }
+    ],
+    [
+      "babel-plugin-styled-components"
+    ]
+  ]
+}

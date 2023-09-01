@@ -1,0 +1,338 @@
+.join {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  margin-bottom: 150px;
+}
+
+.join .join-wrap {
+  width: 1280px;
+  margin: 0 auto;
+}
+
+.join .join-title {
+  border-bottom: 2px solid rgb(51, 51, 51);
+  /* margin: 0 auto; */
+  padding-bottom: 10px;
+}
+
+.join .join-title h1 {
+  margin-top: 20px;
+  line-height: 1.3;
+  letter-spacing: -1px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* contents */
+.join .join-contents {
+  padding-top: 20px;
+}
+
+.join .join-contents .contents-inner {
+  max-width: 100%;
+  padding-bottom: 50px;
+}
+
+/*  --> process */
+.join .join-contents .contents-inner .process {
+  display: table;
+  width: 100%;
+  margin-top: 0;
+}
+
+.join .join-contents .contents-inner .process li {
+  display: table-cell;
+  position: relative;
+  width: 20%;
+  height: 66px;
+  padding-left: 60px;
+  background: rgb(238, 238, 238);
+  color: rgb(66, 66, 66);
+  vertical-align: middle;
+}
+
+.join .join-contents .contents-inner .process li:not(.last)::after {
+  display: inline-block;
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 17px;
+  height: 66px;
+  background: url(https://www.gov.kr/2017/img/page/step_after.gif) 0px 0px no-repeat;
+}
+
+.join .join-contents .contents-inner .process li.current {
+  background: #034273;
+  color: #fff;
+}
+
+.join .join-contents .contents-inner .process li.current:not(.first)::before {
+  display: inline-block;
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: -17px;
+  width: 17px;
+  height: 66px;
+  background: url(https://www.gov.kr/2017/img/page/step_before_on.gif) 0px 0px no-repeat;
+}
+
+.join .join-contents .contents-inner .process li.current:not(.last)::after {
+  display: inline-block;
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 17px;
+  height: 66px;
+  background: url(https://www.gov.kr/2017/img/page/step_after_on.gif) no-repeat 0 0;
+}
+
+.join .join-contents .contents-inner .process li .num {
+  font-weight: bold;
+  font-size: 24px;
+  /* font-size: 2.4rem; */
+  position: absolute;
+  top: 18px;
+  left: 17px;
+}
+
+.join .join-contents .contents-inner .process li .process-text {
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: -2px;
+
+}
+
+/* // --- process */
+
+.tableT td {
+  color: #555555;
+  padding: 12px 3px 12px 15px;
+  text-align: left;
+  border-bottom: 1px #dbdbdb solid;
+  letter-spacing: -0.6px;
+  word-break: keep-all;
+  font-size: 14px;
+  color: #777777;
+}
+
+.tableT .bB0 {
+  border-bottom: 0;
+}
+
+.popT .uptr06 input {
+  width: auto;
+}
+
+.popT .part input {
+  width: 95%;
+}
+
+.popT th {
+  text-align: left;
+  padding: 8px 2px;
+  padding-left: 15px;
+}
+
+.popT td {
+  padding: 8px 3px 8px 15px;
+}
+
+.popT input,
+.popT select {
+  border: 1px #d0d0d0 solid;
+  box-sizing: border-box;
+  height: 30px;
+  box-sizing: border-box;
+  padding-left: 5px;
+  font-size: 15px;
+  color: #777777;
+  margin: 0 10px;
+}
+
+.popT input {
+  width: 28.5%;
+}
+
+.popT .uptr04 input {
+  width: 13%;
+}
+
+.uptr03 span {
+  font-size: 14px;
+  color: #666666;
+  display: inline-block;
+  margin-left: 3px;
+}
+
+.uptr05 textarea {
+  width: 100%;
+  border: 1px #d0d0d0 solid;
+  box-sizing: border-box;
+  padding: 5px;
+  height: 108px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #777777;
+}
+
+.small_s {
+  font-size: 14px;
+  color: #666666;
+  vertical-align: middle;
+}
+
+.join .join-contents .contents-inner h2 {
+  margin: 30px 0 10px;
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  font-weight: normal;
+}
+
+.join .join-contents .contents-inner .required-text {
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: -1px;
+  color: #333;
+}
+
+.join .join-contents .contents-inner .required-img {
+  display: inline-block;
+  font-size: 10px;
+  color: #ec464d;
+  width: 10px;
+  height: 10px;
+  background: url(https://www.gov.kr/2017/img/page/ico_fa_asterisk.png) no-repeat 0 0;
+}
+
+.join .join-contents .contents-inner .required-img .hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.join .join-contents .contents-inner .input-list {
+  margin-top: 10px;
+  clear: both;
+  border-top: 1px solid #3b3b3b;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.join .join-contents .contents-inner .input-list table {
+  font-size: 13px;
+  border-spacing: 2px;
+  box-sizing: border-box;
+  font-weight: bold;
+  width: 100%;
+}
+
+.join .join-contents .contents-inner .input-list .input-title {
+  width: 20%;
+}
+
+.join .join-contents .contents-inner .input-list .input-content {
+  width: auto;
+}
+
+.join .join-contents .contents-inner .input-list tbody tr {
+  display: table-row;
+  font-size: 13px;
+}
+
+.join .join-contents .contents-inner .input-list tbody th,
+.join .join-contents .contents-inner .input-list tbody td {
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: left;
+}
+
+.join .join-contents .contents-inner .input-list th {
+  color: #333;
+  padding: 9px 0;
+  background: #f5f5f5;
+  border-bottom: 1px solid #d3d3d3;
+}
+
+.join .join-contents .contents-inner .input-list tbody th {
+  border-top: 1px solid #d3d3d3;
+  border-bottom: none;
+}
+
+.join .join-contents .contents-inner .input-list tbody td {
+  border-top: 1px solid #e9e9e9;
+  padding: 7px 0;
+  background: #fff;
+}
+
+.join .input-desc {
+  margin: 0 10px;
+}
+
+.join .error-text-red {
+  color: #ec464d;
+  padding: 0 0 0 5px;
+}
+
+.join .input-addr {
+  margin-bottom: 10px;
+}
+
+.join .input-addr-w {
+  width: 40%;
+}
+
+.join .check-btn {
+  display: inline-block;
+  height: 28px;
+  line-height: 28px;
+  background: #616161;
+  color: #fff;
+  padding: 0 10px 0;
+}
+
+.join .input-email1 {
+  width: 20%;
+}
+
+.btnbox {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.join-contents .btnbox .btnfb7 {
+  background-color: rgb(11, 38, 110);
+  font-size: 18px;
+  color: #FFF;
+  height: 42px;
+  line-height: 42px;
+  display: inline-block;
+  padding: 0 25px;
+  vertical-align: middle;
+  font-family: "ngB" !important;
+}
+
+.join-contents .btnbox .btn4d5 {
+  background-color: #4d515b;
+  font-size: 18px;
+  color: #FFF;
+  height: 42px;
+  line-height: 42px;
+  display: inline-block;
+  padding: 0 25px;
+  vertical-align: middle;
+  font-family: "ngB" !important;
+}
+
+.join-contents .btnbox02 a {
+  width: 129px;
+  box-sizing: border-box;
+  margin: 0 2px;
+}

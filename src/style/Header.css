@@ -1,0 +1,159 @@
+ /* 로그인 스타일 */
+ .header-login-wrap {
+   overflow: hidden;
+   border-bottom: 1px solid #a1a1a1;
+ }
+
+ .login-wrap {
+   float: right;
+   margin: 20px 30px;
+   padding: 0 25px;
+   border-left: 1px solid #d1d1d1;
+   border-right: 1px solid #d1d1d1;
+ }
+
+ .login-wrap p {
+   font-weight: bold;
+   color: #555;
+ }
+
+ .fix-header {
+   margin: 0 auto;
+ }
+
+ /* 상단 메뉴 바 스타일 */
+ .header-menu-wrap {
+   position: fixed;
+   top: 60px;
+   margin: 0 auto;
+   left: 0;
+   right: 0;
+   width: 1280px;
+   height: 100px;
+   z-index: 1000;
+   overflow: hidden;
+ }
+
+ .logo-wrap {
+   float: left;
+ }
+
+ /* 로고 이미지 스타일 */
+ .logo-wrap img {
+   width: auto;
+   height: 100px;
+ }
+
+ /* 메뉴 스타일 */
+ .menu-wrap {
+   line-height: 100px;
+   float: right;
+ }
+
+ .menus {
+   list-style: none;
+   display: flex;
+   margin: 0;
+   padding: 0;
+ }
+
+ .menus li {
+   margin: 0;
+   padding: 0;
+ }
+
+ .menus li span {
+   text-decoration: none;
+   color: #333;
+   font-weight: bold;
+   font-size: 20px;
+   margin: 0 60px;
+ }
+
+
+
+
+ /* 푸터 스타일 */
+ .footer {
+   background-color: #dadada;
+   padding: 30px 0;
+   color: #666;
+   font-size: 14px;
+   text-align: center;
+ }
+
+ #footer-box {
+   margin: 0 auto;
+   width: 1280px;
+   padding: 0 20px;
+ }
+
+ .logo-footer {
+   float: left;
+ }
+
+ .logo-footer img {
+   width: auto;
+   height: 100px;
+ }
+
+ .footer-menu {
+   margin-top: 20px;
+   padding: 0;
+ }
+
+ .footer-menu li {
+   display: inline-block;
+   margin-right: 20px;
+ }
+
+ .footer-notice {
+   margin-top: 30px;
+ }
+
+ .footer-notice span {
+   display: block;
+   font-weight: bold;
+   color: #000;
+   margin-top: 5px;
+   text-align: right;
+   /* 오른쪽으로 정렬 */
+ }
+
+ address {
+   display: block;
+   margin-top: 15px;
+   font-style: normal;
+   text-align: right;
+   /* 오른쪽으로 정렬 */
+ }
+
+ .goto-family {
+   margin-top: 15px;
+   text-align: right;
+   /* 오른쪽으로 정렬 */
+ }
+
+ /* 관련사이트 선택 박스 스타일 */
+ #site-search {
+   border: 1px solid #ccc;
+   padding: 8px;
+   border-radius: 4px;
+   background-color: #fff;
+ }
+
+ .btngoto {
+   display: inline-block;
+   vertical-align: middle;
+   margin-left: 10px;
+ }
+
+ /* 링크 스타일 */
+ a {
+   color: #333;
+   text-decoration: none;
+ }
+
+ a:hover {
+   text-decoration: underline;
+ }
