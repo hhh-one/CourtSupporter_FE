@@ -22,4 +22,5 @@ instance.interceptors.request.use(
 
 export const apis = {
   get_users: () => instance.get(`/users`),
+  insert_users: params => instance.post(`/users/joinForm`, params),
 };

@@ -302,6 +302,19 @@
   width: 20%;
 }
 
+.join .account-text3 {
+  margin-right: 14px;
+  margin-left: 10px;
+}
+
+.join .account-text4 {
+  margin-left: 10px;
+}
+
+.join .account-div {
+  margin-top: 10px;
+}
+
 .btnbox {
   text-align: center;
   margin-top: 40px;
