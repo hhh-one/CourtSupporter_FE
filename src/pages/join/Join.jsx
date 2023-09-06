@@ -54,15 +54,14 @@ const Join = () => {
   //이메일 입력값
   const [email1, setEmail1] = useState('');
   const [email2, setEmail2] = useState('');
-  const [isCustomEmail2, setIsCustomEmail2] = useState(true); //직접입력
+  const [emailProvider, setEmailProvider] = useState('');
+  const [customEmail, setCustomEmail] = useState('');
 
   //주소 입력값
   const [isAddressOpen, setIsAddressOpen] = useState(false);
-  const [userAddress, setUserAddress] = useState({
-    jibun: '',
-    postcode: '',
-    address: '',
-  })
+
+  //계좌 선택값
+  const [isCustomBank, setIsCustomBank] = useState(true);
 
   let addressRef = useRef(null)
   useEffect(() => {
@@ -80,16 +79,18 @@ const Join = () => {
   }, [addressRef])
 
   //id 유효성 검사
-  const onBlurId = (e) => {
+  const onChangeId = (e) => {
     const idRegex = /^[A-Za-z0-9]{4,16}$/;
     const { name, value } = e.target;
 
     setFormData({ ...formData, [name]: value });
     if (value.length < 4) {
       setIdMessage('4글자 이상으로 입력해주세요');
+      setIsIdHidden(true);
       setIsId(false);
     } else if (!idRegex.test(value)) {
       setIdMessage('4~16자 영문/숫자를 입력해주세요');
+      setIsIdHidden(true);
       setIsId(false);
     } else {
       setIsIdHidden(true);
@@ -99,16 +100,18 @@ const Join = () => {
 
 
   //password 유효성 검사
-  const onBlurPassword = (e) => {
+  const onChangePassword = (e) => {
     const passwordRegex = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
     const { name, value } = e.target;
 
     setFormData({ ...formData, [name]: value });
     if (value.length < 8 || value.length > 16) {
       setPasswordMessage('8글자 이상 16글자 이하로 입력해주세요');
+      setIsPwHidden(true);
       setIsPassword(false);
     } else if (!passwordRegex.test(value)) {
       setPasswordMessage('8~16자 문자 + 숫자 + 특수문자를 입력해주세요');
+      setIsPwHidden(true);
       setIsPassword(false);
     } else {
       setIsPwHidden(true);
@@ -117,11 +120,10 @@ const Join = () => {
   };
 
   //비밀번호 확인
-  const onBlurPasswordConfirm = (e) => {
-    const currentPasswordConfirm = e.target.value;
+  const onChangePasswordConfirm = (e) => {
 
-    setPasswordConfirm(currentPasswordConfirm);
-    if (formData.user_pw !== currentPasswordConfirm) {
+    setPasswordConfirm(e.target.value);
+    if (formData.user_pw !== e.target.value) {
       setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
       setIsPasswordConfirm(false);
     } else {
@@ -131,7 +133,7 @@ const Join = () => {
   }
 
   //이름 유효성 검사
-  const onBlurName = (e) => {
+  const onChangeName = (e) => {
     const { name, value } = e.target;
 
     setFormData({ ...formData, [name]: value });
@@ -143,8 +145,32 @@ const Join = () => {
     }
   }
 
+  //주민번호 유효성 검사
+  const [userRrn1, setUserRrn1] = useState('');
+  const [userRrn2, setUserRrn2] = useState('');
+
+  const onChangeUserRrn1 = (e) => {
+    const rrn1Value = e.target.value;
+    setUserRrn1(rrn1Value);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user_rrn: `${rrn1Value}-${userRrn2}`,
+    }));
+  }
+
+  const onChangeUserRrn2 = (e) => {
+    const rrn2Value = e.target.value;
+    setUserRrn2(rrn2Value);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user_rrn: `${userRrn1}-${rrn2Value}`,
+    }));
+  }
+
   //생년월일 유효성 검사
-  const onBlurBirthday = (e) => {
+  const onChangeBirthday = (e) => {
     const birthdayRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
     const { name, value } = e.target;
 
@@ -168,6 +194,73 @@ const Join = () => {
     }
   }
 
+  //이메일 select 시 뒤의 input에 작성
+  const handleSelectEmailChange = (e) => {
+    const currentEmail2 = e.target.value;
+
+    if (currentEmail2 === '') {
+      setCustomEmail('');
+    } else {
+      setEmailProvider(currentEmail2);
+      setEmail2(currentEmail2);
+      updateEmail();
+    }
+  }
+
+  //이메일 유효성 검사
+  const onChangeEmail1 = (e) => {
+    const email1Regex = /^[a-zA-Z0-9]{1,}$/;
+    const currentEmail1 = e.target.value;
+
+    setEmail1(currentEmail1);
+
+    if (currentEmail1.length <= 0) {
+      setEmailMessage('이메일을 입력해주세요');
+      setIsEmail1(false);
+    } else if (!email1Regex.test(currentEmail1)) {
+      setEmailMessage('이메일 형식에 맞게 입력해주세요');
+      setIsEmail1(false);
+    } else {
+      setEmailMessage('');
+      setIsEmail1(true);
+      updateEmail();
+    }
+  }
+
+  const onChangeEmail2 = (e) => {
+    const email2Regex = /^[a-zA-Z0-9.-]{1,}\.[a-zA-Z]{2,4}$/;
+    const currentEmail2 = e.target.value;
+
+    setEmail2(currentEmail2);
+    setCustomEmail(currentEmail2);
+
+    if (currentEmail2.length <= 0) {
+      setEmailMessage('이메일을 입력해주세요');
+      setIsEmail2(false);
+    } else if (!email2Regex.test(currentEmail2)) {
+      setEmailMessage('이메일 형식에 맞게 입력해주세요');
+      setIsEmail2(false);
+    } else {
+      setEmailMessage('');
+      setIsEmail2(true);
+      updateEmail();
+    }
+  }
+
+  const updateEmail = () => {
+    console.log("1:" + email1);
+    console.log("2:" + email2);
+    const fullEmail = `${email1}@${email2}`;
+    setFormData((prevFormData) => ({ ...prevFormData, user_email: fullEmail }));
+  };
+
+  //직업 유효성 검사
+  const onChangeJob = (e) => {
+    const { name, value } = e.target;
+
+    setFormData({ ...formData, [name]: value });
+  }
+
   //주소 클릭 이벤트
   const handleAddressClick = () => {
     setIsAddressOpen(true);
@@ -184,77 +277,74 @@ const Join = () => {
   }
 
   //상세주소 저장
-  const onBlurAddrDetail = (e) => {
+  const onChangeAddrDetail = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   }
 
-  //이메일 select 시 뒤의 input에 작성
-  const handleSelectEmail2 = (e) => {
-    const currentEmail2 = e.target.value;
-
-    if (currentEmail2 !== '') {
-      setEmail2(currentEmail2);
-      setIsCustomEmail2(false);
-    } else {
-      setEmail2('');
-      setIsCustomEmail2(true);
-      updateEmail();
-    }
-  }
-
-  //이메일 유효성 검사
-  const onBlurEmail1 = (e) => {
-    const email1Regex = /^[a-zA-Z0-9._-]{1,}$/;
-    const currentEmail1 = e.target.value;
-
-    setEmail1(currentEmail1);
-    if (currentEmail1.length <= 0) {
-      setEmailMessage('이메일을 입력해주세요');
-      setIsEmail1(false);
-    } else if (!email1Regex.test(currentEmail1)) {
-      setEmailMessage('이메일 형식에 맞게 입력해주세요');
-      setIsEmail1(false);
-    } else {
-      setEmailMessage('');
-      setIsEmail1(true);
-      updateEmail();
-    }
-  }
-
-  const onBlurEmail2 = (e) => {
-    const email2Regex = /^[a-zA-Z0-9.-]{1,}\.[a-zA-Z]{2,4}$/;
-    const currentEmail2 = e.target.value;
-
-    setEmail2(currentEmail2);
-    if (currentEmail2.length <= 0) {
-      setEmailMessage('이메일을 입력해주세요');
-      setIsEmail2(false);
-    } else if (!email2Regex.test(currentEmail2)) {
-      setEmailMessage('이메일 형식에 맞게 입력해주세요');
-      setIsEmail2(false);
-    } else {
-      setEmailMessage('');
-      setIsEmail2(true);
-      updateEmail();
-    }
-  }
-
-  const updateEmail = () => {
-    if (isEmail1 && isEmail2) {
-      const fullEmail = `${email1}@${email2}`;
-      setFormData({ ...formData, user_email: fullEmail });
-    }
-  };
-
   //휴대폰번호 유효성 검사
-  const onBlurPhone3 = (e) => {
+  const [phone1, setPhone1] = useState('');
+  const [phone2, setPhone2] = useState('');
+  const [phone3, setPhone3] = useState('');
+
+  const onChangePhone1 = (e) => {
     const phone3Regex = /^[0-9]{3}$/;
     const currentPhone = e.target.value;
 
+    setPhone1(currentPhone);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user_phone: `${currentPhone}-${phone2}-${phone3}`,
+    }));
     if (phone3Regex.test(currentPhone)) {
 
     }
+  }
+
+  const onChangePhone2 = (e) => {
+    const phone3Regex = /^[0-9]{4}$/;
+    const currentPhone = e.target.value;
+
+    setPhone2(currentPhone);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user_phone: `${phone1}-${currentPhone}-${phone3}`,
+    }));
+    if (phone3Regex.test(currentPhone)) {
+
+    }
+  }
+
+  const onChangePhone3 = (e) => {
+    const phone3Regex = /^[0-9]{4}$/;
+    const currentPhone = e.target.value;
+
+    setPhone3(currentPhone);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user_phone: `${phone1}-${phone2}-${currentPhone}`,
+    }));
+    if (phone3Regex.test(currentPhone)) {
+
+    }
+  }
+
+  //계좌번호 유효성 검사
+  const onChangeBankAccount = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  }
+
+  //계좌 은행 유효성 검사
+  const onChangeBank = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  }
+
+  //계좌 예금주 유효성 검사
+  const onChangeBankHolder = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   }
 
   const handleJoinForm = (e) => {
@@ -326,7 +416,7 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="text" name='user_id' id="userId" maxLength="16" onBlur={onBlurId} />
+                              <input type="text" name='user_id' id="userId" value={formData.user_id} onChange={onChangeId} />
                               <span className="id-check-btn">
                                 <a href="#" id="idCheck" className="check-btn">중복확인</a>
                               </span>
@@ -347,7 +437,7 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="password" name='user_pw' id="userPassword" maxLength="12" onBlur={onBlurPassword} />
+                              <input type="password" name='user_pw' id="userPassword" value={formData.user_pw} onChange={onChangePassword} />
                             </span>
                             {isPwHidden ? null : <span>8~16자까지 모든 문자 + 숫자 + 특수문자 : 영문 대소문자는 구별하여 입력해 주세요</span>}
                             {!isPassword && <span className="error-text-red">{passwordMessage}</span>}
@@ -365,7 +455,7 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="password" id="userPwCheck" maxLength="12" onBlur={onBlurPasswordConfirm} />
+                              <input type="password" id="userPwCheck" value={passwordConfirm} onChange={onChangePasswordConfirm} />
                             </span>
                             {!isPasswordConfirm && <span className="error-text-red">{passwordConfirmMessage}</span>}
                           </td>
@@ -382,7 +472,7 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="text" name='user_name' id="userName" onBlur={onBlurName} />
+                              <input type="text" name='user_name' id="userName" value={formData.user_name} onChange={onChangeName} />
                             </span>
                             {!isName && <span className='error-text-red'>{nameMessage}</span>}
                           </td>
@@ -399,10 +489,10 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type='hidden' name='user_rrn' id="userRRN" />
-                              <input type="text" id='userRRN1' />
+                              <input type='hidden' name='user_rrn' id="userRRN" value={formData.user_rrn} />
+                              <input type="text" id='userRRN1' value={userRrn1} onChange={onChangeUserRrn1} />
                               <span>-</span>
-                              <input type="password" id='userRRN2' />
+                              <input type="password" id='userRRN2' value={userRrn2} onChange={onChangeUserRrn2} />
                             </span>
                           </td>
                         </tr>
@@ -418,7 +508,7 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="text" name='user_birthdate' id="userBirth" placeholder='0000-00-00으로 작성' onBlur={onBlurBirthday} />
+                              <input type="text" name='user_birthdate' id="userBirth" placeholder='0000-00-00으로 작성' value={formData.user_birthdate} onChange={onChangeBirthday} />
                             </span>
                             {!isBirthday && <span className='error-text-red'>{birthdayMessage}</span>}
                           </td>
@@ -435,10 +525,10 @@ const Join = () => {
                           </th>
                           <td className="">
                             <input type='hidden' name='user_email' value={formData.user_email} />
-                            <input type="text" title="전자우편아이디" className='input-email1' name="email1" id="userEmail" maxLength="50" onBlur={onBlurEmail1} />
+                            <input type="text" title="전자우편아이디" className='input-email1' name="email1" id="userEmail" value={email1} onChange={onChangeEmail1} />
                             <span>@</span>
-                            {isCustomEmail2 ? <input type="text" title="전자우편서비스" name="email2" id="email-provider" maxLength="40" onBlur={onBlurEmail2} /> : null}
-                            <select className="selC" name="email_select" id="email_select" title="전자우편서비스선택" onChange={handleSelectEmail2} >
+                            {emailProvider === '' ? <input type="text" title="전자우편서비스" name="email2" id="email-provider" value={customEmail} onChange={onChangeEmail2} /> : null}
+                            <select className="selC" name="email_select" id="email_select" title="전자우편서비스선택" value={emailProvider} onChange={handleSelectEmailChange} >
                               <option value='hanmail.net'>hanmail.net</option>
                               <option value='lycos.co.kr'>lycos.co.kr</option>
                               <option value='empal.com'>empal.com</option>
@@ -449,7 +539,7 @@ const Join = () => {
                               <option value='nate.com'>nate.com</option>
                               <option value='' selected="selected">직접입력</option>
                             </select>
-                            {(!isEmail1 || ((!isEmail2 && isCustomEmail2) || (isEmail2 && !isCustomEmail2))) && <span className='error-text-red'>{emailMessage}</span>}
+                            {(!isEmail1 || !isEmail2) && <span className='error-text-red'>{emailMessage}</span>}
                           </td>
                         </tr>
 
@@ -463,12 +553,12 @@ const Join = () => {
                             </label>
                           </th>
                           <td className="uptr04">
-                            <input type='hidden' id="userPhone" name='user_phone' />
-                            <input title="핸드폰앞자리" name="hp_1" type="text" maxLength='3' onBlur={onBlurPhone3} />
+                            <input type='hidden' id="userPhone" name='user_phone' value={formData.user_phone} />
+                            <input title="핸드폰앞자리" name="hp_1" type="text" value={phone1} onChange={onChangePhone1} />
                             <span>-</span>
-                            <input title="핸드폰중간자리" name="hp_2" type="text" maxLength='4' />
+                            <input title="핸드폰중간자리" name="hp_2" type="text" value={phone2} onChange={onChangePhone2} />
                             <span>-</span>
-                            <input title="핸드폰뒷자리" name="hp_3" type="text" maxLength='4' />
+                            <input title="핸드폰뒷자리" name="hp_3" type="text" value={phone3} onChange={onChangePhone3} />
                           </td>
                         </tr>
 
@@ -480,7 +570,7 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="text" id="userJob" name='user_job' />
+                              <input type="text" id="userJob" name='user_job' value={formData.user_job} onChange={onChangeJob} />
                             </span>
                           </td>
                         </tr>
@@ -494,13 +584,13 @@ const Join = () => {
                           <td>
                             <span className="input-btn ">
                               <div className="uptr04">
-                                <input type="text" name='user_ar_zonecode' id="userAddressNum" className="input-addr" placeholder="우편번호" value={formData.user_ar_jibun} onClick={() => handleAddressClick()} />
+                                <input type="text" name='user_ar_zonecode' id="userAddressNum" className="input-addr" placeholder="우편번호" value={formData.user_ar_zonecode} onClick={() => handleAddressClick()} />
                                 <button type='button' id="addressFindBtn" className="check-btn" onClick={() => handleAddressClick()}>주소찾기</button>
                               </div>
                               <input type="text" id="userAddress" name='user_ar' maxLength="50" className="input-addr input-addr-w" placeholder="주소" value={formData.user_ar} onClick={() => handleAddressClick()} />
                               <input type='hidden' name='user_ar_jibun' value={formData.user_ar_jibun} />
                               <br />
-                              <input type="text" name='user_ar_detail' id="userAddressDetail" maxLength="50" className="input-addr-w" placeholder="상세주소" onBlur={onBlurAddrDetail} />
+                              <input type="text" name='user_ar_detail' id="userAddressDetail" maxLength="50" className="input-addr-w" placeholder="상세주소" value={formData.user_ar_detail} onChange={onChangeAddrDetail} />
                               <div ref={addressRef}>
                                 {isAddressOpen && <div><S.PostCode onComplete={handleDaumPostcodeComplete} autoClose /></div>}
                               </div>
@@ -519,13 +609,11 @@ const Join = () => {
                           </th>
                           <td>
                             <span className='account-text4'>계좌번호</span>
-                            <input type="text" title="계좌정보" name="user_bank_account" id="user_bank_account" maxlength="50" />
+                            <input type="text" title="계좌정보" name="user_bank_account" id="user_bank_account" value={formData.user_bank_account} onChange={onChangeBankAccount} />
                             <div className='account-div'>
                               <span className='account-text3'>은행명</span>
-                              <input title="은행명" name="user_bank" type="text" id="user_bank" />
-                              <select className="selC" name="accountnum_select" id="account_select"
-                                title="계좌정보선택">
-                                <option value=''>선택하세요</option>
+                              {isCustomBank ? <input title="은행명" name="user_bank" type="text" id="user_bank" value={formData.user_bank} /> : null}
+                              <select className="selC" name="user_bank" id="account_select" title="계좌정보선택" value={formData.user_bank} onChange={onChangeBank}>
                                 <option value='국민'>국민</option>
                                 <option value='신한'>신한</option>
                                 <option value='우리'>우리</option>
@@ -539,7 +627,7 @@ const Join = () => {
                             </div>
                             <div className='account-div'>
                               <span className='account-text3'>예금주</span>
-                              <input title="예금주" name="user_bank_holder" type="text" id="user_bank_holder" />
+                              <input title="예금주" name="user_bank_holder" type="text" id="user_bank_holder" value={formData.user_bank_holder} onChange={onChangeBankHolder} />
                             </div>
                           </td>
                         </tr>
