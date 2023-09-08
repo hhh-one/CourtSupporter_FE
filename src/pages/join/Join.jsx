@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Footer, Header } from '../../components';
+import { useNavigate } from 'react-router-dom';
 import '../../style/Join.css'
 import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
-import * as api from 'api'
+import * as api from 'api';
+import * as utils from 'utils';
 
 const Join = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     user_id: '',
     user_proper_num: '',
@@ -39,23 +43,30 @@ const Join = () => {
   const [passwordMessage, setPasswordMessage] = useState('');
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
   const [nameMessage, setNameMessage] = useState('');
+  const [rrnMessage, setRrnMessage] = useState('');
   const [birthdayMessage, setBirthdayMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
+  const [phoneMessage, setPhoneMessage] = useState('');
+  const [accountMessage, setAccountMessage] = useState('');
 
   //input 유효성 검사
   const [isId, setIsId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isName, setIsName] = useState(false);
+  const [isRrn1, setIsRrn1] = useState(false);
+  const [isRrn2, setIsRrn2] = useState(false);
   const [isBirthday, setIsBirthday] = useState(false);
   const [isEmail1, setIsEmail1] = useState(false);
   const [isEmail2, setIsEmail2] = useState(false);
+  const [isPhone1, setIsPhone1] = useState(false);
+  const [isPhone2, setIsPhone2] = useState(false);
+  const [isPhone3, setIsPhone3] = useState(false);
+  const [isAccount1, setIsAccount1] = useState(false);
+  const [isAccount2, setIsAccount2] = useState(false);
+  const [isAccount3, setIsAccount3] = useState(false);
 
   //이메일 입력값
-  const [email1, setEmail1] = useState('');
-  const [email2, setEmail2] = useState('');
-  const [emailProvider, setEmailProvider] = useState('');
-  const [customEmail, setCustomEmail] = useState('');
 
   //주소 입력값
   const [isAddressOpen, setIsAddressOpen] = useState(false);
@@ -121,8 +132,8 @@ const Join = () => {
 
   //비밀번호 확인
   const onChangePasswordConfirm = (e) => {
-
     setPasswordConfirm(e.target.value);
+
     if (formData.user_pw !== e.target.value) {
       setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
       setIsPasswordConfirm(false);
@@ -150,6 +161,7 @@ const Join = () => {
   const [userRrn2, setUserRrn2] = useState('');
 
   const onChangeUserRrn1 = (e) => {
+    const rrn1Regex = /^[0-9]{6}$/;
     const rrn1Value = e.target.value;
     setUserRrn1(rrn1Value);
 
@@ -157,9 +169,20 @@ const Join = () => {
       ...prevFormData,
       user_rrn: `${rrn1Value}-${userRrn2}`,
     }));
+    if (rrn1Value.length <= 0) {
+      setRrnMessage('주민등록번호는 필수입니다');
+      setIsRrn1(false);
+    } else if (rrn1Regex.test(rrn1Value)) {
+      setIsRrn1(true);
+      setRrnMessage('');
+    } else {
+      setRrnMessage('6자리의 앞자리를 바르게 입력해주세요');
+      setIsRrn1(false);
+    }
   }
 
   const onChangeUserRrn2 = (e) => {
+    const rrn2Regex = /^[0-9]{7}$/;
     const rrn2Value = e.target.value;
     setUserRrn2(rrn2Value);
 
@@ -167,6 +190,16 @@ const Join = () => {
       ...prevFormData,
       user_rrn: `${userRrn1}-${rrn2Value}`,
     }));
+    if (rrn2Value.length <= 0) {
+      setRrnMessage('주민등록번호는 필수입니다');
+      setIsRrn2(false);
+    } else if (rrn2Regex.test(rrn2Value)) {
+      setRrnMessage('');
+      setIsRrn2(true);
+    } else {
+      setRrnMessage('7자리의 뒷자리를 바르게 입력해주세요');
+      setIsRrn2(false);
+    }
   }
 
   //생년월일 유효성 검사
@@ -194,64 +227,37 @@ const Join = () => {
     }
   }
 
-  //이메일 select 시 뒤의 input에 작성
-  const handleSelectEmailChange = (e) => {
-    const currentEmail2 = e.target.value;
+  //이메일 유효성 검사
+  const [emailId, setEmailId] = useState(''); //이메일 앞쪽 아이디
+  const [emailProvider, setEmailProvider] = useState(''); // 이메일 서비스 선택
+  const [customEmail, setCustomEmail] = useState(''); // 직접 입력한 이메일
 
-    if (currentEmail2 === '') {
+  const onChangeEmailId = (e) => {
+    const currentEmail = e.target.value;
+
+    setEmailId(currentEmail);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user_email: `${currentEmail}@${customEmail}`,
+    }));
+  }
+
+  const handleSelectEmailChange = (e) => {
+    const selectedValue = e.target.value;
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user_email: `${emailId}@${selectedValue}`,
+    }));
+
+    if (selectedValue === '') {
+      // 선택한 값이 빈 문자열인 경우 직접 입력 가능
       setCustomEmail('');
     } else {
-      setEmailProvider(currentEmail2);
-      setEmail2(currentEmail2);
-      updateEmail();
+      // 선택한 값이 빈 문자열이 아닌 경우 해당 값을 입력란에 설정하고 입력란 비활성화
+      setCustomEmail(selectedValue);
     }
-  }
-
-  //이메일 유효성 검사
-  const onChangeEmail1 = (e) => {
-    const email1Regex = /^[a-zA-Z0-9]{1,}$/;
-    const currentEmail1 = e.target.value;
-
-    setEmail1(currentEmail1);
-
-    if (currentEmail1.length <= 0) {
-      setEmailMessage('이메일을 입력해주세요');
-      setIsEmail1(false);
-    } else if (!email1Regex.test(currentEmail1)) {
-      setEmailMessage('이메일 형식에 맞게 입력해주세요');
-      setIsEmail1(false);
-    } else {
-      setEmailMessage('');
-      setIsEmail1(true);
-      updateEmail();
-    }
-  }
-
-  const onChangeEmail2 = (e) => {
-    const email2Regex = /^[a-zA-Z0-9.-]{1,}\.[a-zA-Z]{2,4}$/;
-    const currentEmail2 = e.target.value;
-
-    setEmail2(currentEmail2);
-    setCustomEmail(currentEmail2);
-
-    if (currentEmail2.length <= 0) {
-      setEmailMessage('이메일을 입력해주세요');
-      setIsEmail2(false);
-    } else if (!email2Regex.test(currentEmail2)) {
-      setEmailMessage('이메일 형식에 맞게 입력해주세요');
-      setIsEmail2(false);
-    } else {
-      setEmailMessage('');
-      setIsEmail2(true);
-      updateEmail();
-    }
-  }
-
-  const updateEmail = () => {
-    console.log("1:" + email1);
-    console.log("2:" + email2);
-    const fullEmail = `${email1}@${email2}`;
-    setFormData((prevFormData) => ({ ...prevFormData, user_email: fullEmail }));
+    setEmailProvider(selectedValue); // 선택한 값을 상태로 설정
   };
 
   //직업 유효성 검사
@@ -297,12 +303,16 @@ const Join = () => {
       user_phone: `${currentPhone}-${phone2}-${phone3}`,
     }));
     if (phone3Regex.test(currentPhone)) {
-
+      setPhoneMessage('');
+      setIsPhone1(true);
+    } else {
+      setPhoneMessage('휴대폰 번호를 정확히 입력해주세요');
+      setIsPhone1(false);
     }
   }
 
   const onChangePhone2 = (e) => {
-    const phone3Regex = /^[0-9]{4}$/;
+    const phone4Regex = /^[0-9]{4}$/;
     const currentPhone = e.target.value;
 
     setPhone2(currentPhone);
@@ -310,13 +320,17 @@ const Join = () => {
       ...prevFormData,
       user_phone: `${phone1}-${currentPhone}-${phone3}`,
     }));
-    if (phone3Regex.test(currentPhone)) {
-
+    if (phone4Regex.test(currentPhone)) {
+      setPhoneMessage('');
+      setIsPhone1(true);
+    } else {
+      setPhoneMessage('휴대폰 번호를 정확히 입력해주세요');
+      setIsPhone1(false);
     }
   }
 
   const onChangePhone3 = (e) => {
-    const phone3Regex = /^[0-9]{4}$/;
+    const phone4Regex = /^[0-9]{4}$/;
     const currentPhone = e.target.value;
 
     setPhone3(currentPhone);
@@ -324,27 +338,57 @@ const Join = () => {
       ...prevFormData,
       user_phone: `${phone1}-${phone2}-${currentPhone}`,
     }));
-    if (phone3Regex.test(currentPhone)) {
-
+    if (phone4Regex.test(currentPhone)) {
+      setPhoneMessage('');
+      setIsPhone1(true);
+    } else {
+      setPhoneMessage('휴대폰 번호를 정확히 입력해주세요');
+      setIsPhone1(false);
     }
   }
 
   //계좌번호 유효성 검사
   const onChangeBankAccount = (e) => {
+    const accountRegex = /^[0-9]{1,}$/;
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (accountRegex.test(value)) {
+      setAccountMessage('');
+      setIsAccount1(true);
+    } else {
+      setAccountMessage('계좌번호를 숫자만 입력해주세요')
+      setIsAccount1(false);
+    }
   }
 
   //계좌 은행 유효성 검사
   const onChangeBank = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (value.length > 1) {
+      setAccountMessage('');
+      setIsCustomBank(false);
+      setIsAccount1(true);
+    } else {
+      setAccountMessage('은행을 선택/입력해주세요');
+      setIsAccount1(false);
+    }
   }
 
   //계좌 예금주 유효성 검사
   const onChangeBankHolder = (e) => {
+    const holderRegex = /^[a-zA-Z가-힣]{1,}$/;
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (holderRegex.test(value)) {
+      setAccountMessage('');
+      setIsAccount1(true);
+    } else {
+      setAccountMessage('예금주를 정확히 입력해주세요');
+      setIsAccount1(false);
+    }
   }
 
   const handleJoinForm = (e) => {
@@ -352,7 +396,9 @@ const Join = () => {
 
     api.apis.insert_users(formData)
       .then(response => {
-        console.log(response)
+        if (response.data === 1) {
+          navigate(utils.URL.HOME.JOINSUCCESS);
+        }
       }).catch(err => {
         console.log(err)
       })
@@ -494,6 +540,7 @@ const Join = () => {
                               <span>-</span>
                               <input type="password" id='userRRN2' value={userRrn2} onChange={onChangeUserRrn2} />
                             </span>
+                            {(!isRrn1 || !isRrn2) && <span className="error-text-red">{rrnMessage}</span>}
                           </td>
                         </tr>
 
@@ -525,10 +572,14 @@ const Join = () => {
                           </th>
                           <td className="">
                             <input type='hidden' name='user_email' value={formData.user_email} />
-                            <input type="text" title="전자우편아이디" className='input-email1' name="email1" id="userEmail" value={email1} onChange={onChangeEmail1} />
+                            <input type="text" title="전자우편아이디" className='input-email1' name="email1" id="userEmail" value={emailId} onChange={onChangeEmailId} />
                             <span>@</span>
-                            {emailProvider === '' ? <input type="text" title="전자우편서비스" name="email2" id="email-provider" value={customEmail} onChange={onChangeEmail2} /> : null}
-                            <select className="selC" name="email_select" id="email_select" title="전자우편서비스선택" value={emailProvider} onChange={handleSelectEmailChange} >
+                            {emailProvider === '' ? <input type="text" title="전자우편서비스" name="email2" id="email-provider" value={customEmail}
+                              onChange={(e) => {
+                                setCustomEmail(e.target.value);
+                                setFormData((prevFormData) => ({ ...prevFormData, user_email: `${emailId}@${e.target.value}`, }));
+                              }} /> : null}
+                            <select className="selC" name="email_select" id="email_select" title="전자우편서비스선택" value={emailProvider} onChange={handleSelectEmailChange}>
                               <option value='hanmail.net'>hanmail.net</option>
                               <option value='lycos.co.kr'>lycos.co.kr</option>
                               <option value='empal.com'>empal.com</option>
@@ -559,6 +610,7 @@ const Join = () => {
                             <input title="핸드폰중간자리" name="hp_2" type="text" value={phone2} onChange={onChangePhone2} />
                             <span>-</span>
                             <input title="핸드폰뒷자리" name="hp_3" type="text" value={phone3} onChange={onChangePhone3} />
+                            {(!isPhone1 || !isPhone2 || !isPhone3) && <span className="error-text-red">{phoneMessage}</span>}
                           </td>
                         </tr>
 
@@ -629,6 +681,7 @@ const Join = () => {
                               <span className='account-text3'>예금주</span>
                               <input title="예금주" name="user_bank_holder" type="text" id="user_bank_holder" value={formData.user_bank_holder} onChange={onChangeBankHolder} />
                             </div>
+                            {(!isAccount1 || !isAccount2 || !isAccount3) && <span className="error-text-red">{accountMessage}</span>}
                           </td>
                         </tr>
                       </tbody>

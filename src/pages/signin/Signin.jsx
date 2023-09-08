@@ -1,20 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { useCookies } from 'react-cookie';
 import '../../style/Signin.css'
 
 import * as utils from 'utils'
 import * as api from 'api'
 import { Header, Footer } from '../../components';
+import axios from 'axios';
 
 const Signin = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['Authorization', 'Refresh']);
   const navigate = useNavigate()
+  const [loginInfo, setLoginInfo] = useState({
+    member_id: "",
+    member_password: "",
+    member_role: "ROLE_USER"
+  })
 
   const getUserList = () => {
     api.apis.get_users().then(response => {
       console.log(response)
     }).catch(err => {
       console.log(err)
+    })
+  }
+
+  const login = () => {
+    api.apis.login(loginInfo).then(response => {
+      setCookie('Authorization', response.data.accessToken, {
+        path: '/',
+      });
+      setCookie('Refresh', response.data.refreshToken, {
+        path: '/',
+      });
+      // axios.get('http://localhost:8788/', {
+      //   headers: {
+      //     'Authorization': `Bearer ${response.data.accessToken}`
+      //   }
+      // });
+      window.location.href = 'http://localhost:8788/';
+    }).catch(err => {
+      console.log(err);
     })
   }
 
@@ -48,19 +75,25 @@ const Signin = () => {
               <div className="signin-input">
                 <div className="input-box">
                   <label for="user-id">아이디</label>
-                  <input type="text" id="user-id" placeholder="아이디를 입력하세요" />
+                  <input type="text" onChange={e => setLoginInfo({
+                    ...loginInfo,
+                    member_id: e.target.value
+                  })} id="user-id" placeholder="아이디를 입력하세요" />
                 </div>
                 <p className="input-info">영문, 숫자 조합하여 4~16자 입력</p>
                 <div className="input-box">
                   <label for="user-pw">비밀번호</label>
-                  <input type="password" id="user-pw" placeholder="비밀번호를 입력하세요" />
+                  <input type="password" onChange={e => setLoginInfo({
+                    ...loginInfo,
+                    member_password: e.target.value
+                  })} id="user-pw" placeholder="비밀번호를 입력하세요" />
                 </div>
                 <p className="id-save">
                   <input type="checkbox" id="id-save-check" className="id-check" />
                   <label for="id-save-check"><span></span>아이디 저장</label>
                 </p>
                 <div className="signin-btn-wrap">
-                  <button type="button" className="button-type-blue login-btn">아이디 로그인</button>
+                  <button type="button" onClick={() => login()} className="button-type-blue login-btn">아이디 로그인</button>
                 </div>
               </div>
               <div className="signin-other-wrap">

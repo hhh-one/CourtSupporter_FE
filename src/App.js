@@ -14,7 +14,7 @@ const App = () => {
       <style.GlobalStyles />
       <Router>
         <Routes>
-          <Route path={utils.URL.HOME.SIGNIN} element={<pages.Signin />} />
+          <Route path={utils.URL.HOME.LOGIN} element={<pages.Signin />} />
           <Route path={utils.URL.HOME.JOINACCEPT} element={<pages.JoinAccept />} />
           <Route path={utils.URL.HOME.JOIN} element={<pages.Join />} />
           <Route path={utils.URL.HOME.JOINSUCCESS} element={<pages.JoinSuccess />} />

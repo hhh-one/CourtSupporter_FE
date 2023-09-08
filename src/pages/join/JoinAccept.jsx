@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Footer, Header } from '../../components';
 import { useNavigate } from 'react-router-dom'
 import '../../style/JoinAccept.css'
@@ -7,6 +7,31 @@ import * as utils from 'utils'
 const JoinAccept = () => {
   const navigate = useNavigate()
 
+  //전체동의
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false);
+
+  const handleCheck1 = (e) => {
+    console.log(e.target);
+    // setIsChecked1(!isChecked1);
+  }
+
+  const handleCheck2 = (e) => {
+    console.log(e.target);
+    // setIsChecked1(!isChecked1);
+  }
+
+  const handleCheckAll = () => {
+    setIsAllChecked(!isAllChecked);
+    if (!isAllChecked) {
+      setIsChecked1(true);
+      setIsChecked2(true);
+    } else {
+      setIsChecked1(false);
+      setIsChecked2(false);
+    }
+  }
   return (
     <>
       <Header />
@@ -36,9 +61,8 @@ const JoinAccept = () => {
                 </ol>
 
                 <p className="accept-all-check">
-                  <input type="checkbox" id="agreeAll" className="all-check" />
-                  <label for="agreeAll">
-                    <span></span>
+                  <input type="checkbox" id="agreeAll" className="all-check" checked={isAllChecked} onClick={handleCheckAll} />
+                  <label htmlFor="agreeAll">
                     전체동의
                   </label>
                 </p>
@@ -286,12 +310,12 @@ const JoinAccept = () => {
                     </div>
                     <div className="check-area list02">
                       <div className="list label-p">
-                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreY" value="Y" />
-                        <label for="useStplatAgreY">동의합니다.</label>
+                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreY" value="Y" checked={isChecked1} onChange={handleCheck1} />
+                        <label htmlFor="useStplatAgreY">동의합니다.</label>
                       </div>
                       <div className="list">
                         <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreN" value="N" />
-                        <label for="useStplatAgreN">동의하지 않습니다.</label>
+                        <label htmlFor="useStplatAgreN">동의하지 않습니다.</label>
                       </div>
                     </div>
 
@@ -364,12 +388,12 @@ const JoinAccept = () => {
                     </div>
                     <div className="check-area list02">
                       <div className="list label-p">
-                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreY" value="Y" />
-                        <label for="useStplatAgreY">동의합니다.</label>
+                        <input type="radio" className="custorm" name="useStplatAgreYn2" id="useStplatAgreY2" value="Y" checked={isChecked2} onChange={handleCheck2} />
+                        <label htmlFor="useStplatAgreY2">동의합니다.</label>
                       </div>
                       <div className="list">
-                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreN" value="N" />
-                        <label for="useStplatAgreN">동의하지 않습니다.</label>
+                        <input type="radio" className="custorm" name="useStplatAgreYn2" id="useStplatAgreN2" value="N" />
+                        <label htmlFor="useStplatAgreN2">동의하지 않습니다.</label>
                       </div>
                     </div>
 

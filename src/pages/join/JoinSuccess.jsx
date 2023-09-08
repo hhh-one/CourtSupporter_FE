@@ -48,7 +48,7 @@ const JoinSuccess = () => {
                 </div>
 
                 <div class="btnbox btnbox02">
-                  <a class="btnfb7" onClick={() => navigate(utils.URL.HOME.SIGNIN)}>로그인화면 가기</a>
+                  <a class="btnfb7" onClick={() => navigate(utils.URL.HOME.LOGIN)}>로그인화면 가기</a>
                 </div>
               </div>
             </div>

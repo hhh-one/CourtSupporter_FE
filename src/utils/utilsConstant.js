@@ -1,7 +1,7 @@
 export const URL = {
   HOME: {
     MAIN: '/',
-    SIGNIN: '/signin',
+    LOGIN: '/login',
     JOINACCEPT: '/joinAccept',
     JOIN: '/join',
     JOINSUCCESS: '/joinSuccess'
