@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import '../style/Header.css'
 
 const Header = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    function handleScroll() {
+      setScrollY(window.scrollY || window.pageYOffset);
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <div>
       <div className="header-login-wrap">
@@ -10,7 +24,7 @@ const Header = () => {
         </div>
       </div>
       <div className="fix-header">
-        <div className="header-menu-wrap">
+        <div className={scrollY < 20 ? "header-menu-wrap" : 'header-menu-wrap scrolled'}>
           <div className="logo-wrap">
             <a href="#">
               <img src={require('images/logo_color.png').default} alt="재판조력자" />

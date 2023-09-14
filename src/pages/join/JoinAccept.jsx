@@ -9,27 +9,35 @@ const JoinAccept = () => {
 
   //전체동의
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [isChecked1, setIsChecked1] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
+  const [isChecked1, setIsChecked1] = useState(null);
+  const [isChecked2, setIsChecked2] = useState(null);
 
   const handleCheck1 = (e) => {
-    console.log(e.target);
-    // setIsChecked1(!isChecked1);
+    setIsChecked1(e.target.value);
   }
 
   const handleCheck2 = (e) => {
-    console.log(e.target);
-    // setIsChecked1(!isChecked1);
+    setIsChecked2(e.target.value);
   }
 
   const handleCheckAll = () => {
     setIsAllChecked(!isAllChecked);
     if (!isAllChecked) {
-      setIsChecked1(true);
-      setIsChecked2(true);
+      setIsChecked1("Y");
+      setIsChecked2("Y");
     } else {
-      setIsChecked1(false);
-      setIsChecked2(false);
+      setIsChecked1(null);
+      setIsChecked2(null);
+    }
+  }
+
+  const handleLoginBtn = (e) => {
+    e.preventDefault();
+
+    if (isChecked1 === 'Y' && isChecked2 === 'Y') {
+      navigate(utils.URL.HOME.JOIN);
+    } else {
+      alert('약관 동의는 필수입니다.')
     }
   }
   return (
@@ -70,7 +78,7 @@ const JoinAccept = () => {
                 <div className="agree-wrap">
                   <form action="#" method="post">
                     <p className="agree-tit">이용약관(필수)</p>
-                    <div className="agree-cont" tabindex="0">
+                    <div className="agree-cont" tabIndex="0">
                       <strong>제1장 총칙</strong>
                       <br />
                       <br />
@@ -310,17 +318,17 @@ const JoinAccept = () => {
                     </div>
                     <div className="check-area list02">
                       <div className="list label-p">
-                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreY" value="Y" checked={isChecked1} onChange={handleCheck1} />
+                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreY" value="Y" checked={isChecked1 === 'Y'} onChange={handleCheck1} />
                         <label htmlFor="useStplatAgreY">동의합니다.</label>
                       </div>
                       <div className="list">
-                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreN" value="N" />
+                        <input type="radio" className="custorm" name="useStplatAgreYn" id="useStplatAgreN" value="N" checked={isChecked1 === 'N'} onChange={handleCheck1} />
                         <label htmlFor="useStplatAgreN">동의하지 않습니다.</label>
                       </div>
                     </div>
 
                     <p className="agree-tit">개인정보 수집 및 이용 동의(필수)</p>
-                    <div className="agree-cont" tabindex="0">
+                    <div className="agree-cont" tabIndex="0">
                       제1조(개인정보의 처리 목적) "정부24"는 <strong className="blue_emph">다음 각 호에서 열거한 목적을 위하여 최소한으로 개인정보를 처리</strong>하고
                       있습니다. 처리한 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를
                       이행하고 있습니다.<br />
@@ -388,18 +396,18 @@ const JoinAccept = () => {
                     </div>
                     <div className="check-area list02">
                       <div className="list label-p">
-                        <input type="radio" className="custorm" name="useStplatAgreYn2" id="useStplatAgreY2" value="Y" checked={isChecked2} onChange={handleCheck2} />
+                        <input type="radio" className="custorm" name="useStplatAgreYn2" id="useStplatAgreY2" value="Y" checked={isChecked2 === 'Y'} onChange={handleCheck2} />
                         <label htmlFor="useStplatAgreY2">동의합니다.</label>
                       </div>
                       <div className="list">
-                        <input type="radio" className="custorm" name="useStplatAgreYn2" id="useStplatAgreN2" value="N" />
+                        <input type="radio" className="custorm" name="useStplatAgreYn2" id="useStplatAgreN2" value="N" checked={isChecked2 === 'N'} onChange={handleCheck2} />
                         <label htmlFor="useStplatAgreN2">동의하지 않습니다.</label>
                       </div>
                     </div>
 
                     <div className="btnbox btnbox02">
-                      <a href="#none" className="btn4d5" onclick="">취소</a>
-                      <a className="btnfb7" onClick={() => navigate(utils.URL.HOME.JOIN)}>확인</a>
+                      <a href="#none" className="btn4d5">취소</a>
+                      <a href='#none' className="btnfb7" onClick={handleLoginBtn}>확인</a>
                     </div>
                   </form>
                 </div>

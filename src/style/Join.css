@@ -315,6 +315,10 @@
   margin-top: 10px;
 }
 
+.join .step-error {
+  margin: 5px 10px;
+}
+
 .btnbox {
   text-align: center;
   margin-top: 40px;

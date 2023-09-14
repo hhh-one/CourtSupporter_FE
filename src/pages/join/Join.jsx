@@ -6,6 +6,7 @@ import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
 import * as api from 'api';
 import * as utils from 'utils';
+import { isError } from 'lodash';
 
 const Join = () => {
   const navigate = useNavigate();
@@ -31,34 +32,33 @@ const Join = () => {
     user_delete_yn: '',
   });
 
-  //비밀번호 확인
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  //유효성 검사 & 오류메시지
+  const [errorState, setErrorState] = useState({
+    user_id: { isRight: false, message: '' },
+    user_proper_num: { isRight: false, message: '' },
+    user_pw: { isRight: false, message: '' },
+    user_pw_confirm: { isRight: false, message: '' },
+    user_name: { isRight: false, message: '' },
+    user_rrn1: { isRight: false, message: '' },
+    user_rrn2: { isRight: false, message: '' },
+    user_birthdate: { isRight: false, message: '' },
+    user_email: { isRight: false, message: '' },
+    user_phone: { isRight: false, isRight1: false, isRight2: false, isRight3: false, message: '' },
+    user_bank: { isRight: false, message: '' },
+    user_bank_account: { isRight: false, message: '' },
+    user_bank_holder: { isRight: false, message: '' },
+  });
+
   //아이디 정보 숨기기
   const [isIdHidden, setIsIdHidden] = useState(false);
   //비밀번호 정보 숨기기
   const [isPwHidden, setIsPwHidden] = useState(false);
 
   //오류 메시지 상태저장
-  const [idMessage, setIdMessage] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
-  const [nameMessage, setNameMessage] = useState('');
-  const [rrnMessage, setRrnMessage] = useState('');
-  const [birthdayMessage, setBirthdayMessage] = useState('');
-  const [emailMessage, setEmailMessage] = useState('');
   const [phoneMessage, setPhoneMessage] = useState('');
   const [accountMessage, setAccountMessage] = useState('');
 
   //input 유효성 검사
-  const [isId, setIsId] = useState(false);
-  const [isPassword, setIsPassword] = useState(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-  const [isName, setIsName] = useState(false);
-  const [isRrn1, setIsRrn1] = useState(false);
-  const [isRrn2, setIsRrn2] = useState(false);
-  const [isBirthday, setIsBirthday] = useState(false);
-  const [isEmail1, setIsEmail1] = useState(false);
-  const [isEmail2, setIsEmail2] = useState(false);
   const [isPhone1, setIsPhone1] = useState(false);
   const [isPhone2, setIsPhone2] = useState(false);
   const [isPhone3, setIsPhone3] = useState(false);
@@ -66,14 +66,13 @@ const Join = () => {
   const [isAccount2, setIsAccount2] = useState(false);
   const [isAccount3, setIsAccount3] = useState(false);
 
-  //이메일 입력값
-
   //주소 입력값
   const [isAddressOpen, setIsAddressOpen] = useState(false);
 
-  //계좌 선택값
+  //은행 선택값
   const [isCustomBank, setIsCustomBank] = useState(true);
 
+  //주소 선택
   let addressRef = useRef(null)
   useEffect(() => {
     const handleOutside = e => {
@@ -96,16 +95,23 @@ const Join = () => {
 
     setFormData({ ...formData, [name]: value });
     if (value.length < 4) {
-      setIdMessage('4글자 이상으로 입력해주세요');
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '4글자 이상 입력해주세요' }
+      });
       setIsIdHidden(true);
-      setIsId(false);
     } else if (!idRegex.test(value)) {
-      setIdMessage('4~16자 영문/숫자를 입력해주세요');
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '4~16자 영문/숫자를 입력해주세요' }
+      });
       setIsIdHidden(true);
-      setIsId(false);
     } else {
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
       setIsIdHidden(true);
-      setIsId(true);
     }
   };
 
@@ -117,29 +123,44 @@ const Join = () => {
 
     setFormData({ ...formData, [name]: value });
     if (value.length < 8 || value.length > 16) {
-      setPasswordMessage('8글자 이상 16글자 이하로 입력해주세요');
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '8글자 이상 16글자 이하로 입력해주세요' }
+      });
       setIsPwHidden(true);
-      setIsPassword(false);
     } else if (!passwordRegex.test(value)) {
-      setPasswordMessage('8~16자 문자 + 숫자 + 특수문자를 입력해주세요');
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '8~16자 문자 + 숫자 + 특수문자를 입력해주세요' }
+      });
       setIsPwHidden(true);
-      setIsPassword(false);
     } else {
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
       setIsPwHidden(true);
-      setIsPassword(true);
     }
   };
 
   //비밀번호 확인
-  const onChangePasswordConfirm = (e) => {
-    setPasswordConfirm(e.target.value);
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
-    if (formData.user_pw !== e.target.value) {
-      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
-      setIsPasswordConfirm(false);
+  const onChangePasswordConfirm = (e) => {
+    const { name, value } = e.target;
+    setPasswordConfirm(value);
+
+    if (formData.user_pw !== value) {
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '비밀번호가 일치하지 않습니다' }
+      });
+
     } else {
-      setPasswordConfirmMessage('');
-      setIsPasswordConfirm(true);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
     }
   }
 
@@ -149,10 +170,15 @@ const Join = () => {
 
     setFormData({ ...formData, [name]: value });
     if (value.length <= 0) {
-      setNameMessage('이름은 필수 입력사항입니다');
-      setIsName(false);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '이름은 필수 입력사항입니다' }
+      });
     } else {
-      setIsName(true);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
     }
   }
 
@@ -162,43 +188,55 @@ const Join = () => {
 
   const onChangeUserRrn1 = (e) => {
     const rrn1Regex = /^[0-9]{6}$/;
-    const rrn1Value = e.target.value;
-    setUserRrn1(rrn1Value);
+    const { name, value } = e.target;
+    setUserRrn1(value);
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      user_rrn: `${rrn1Value}-${userRrn2}`,
+      user_rrn: `${value}-${userRrn2}`,
     }));
-    if (rrn1Value.length <= 0) {
-      setRrnMessage('주민등록번호는 필수입니다');
-      setIsRrn1(false);
-    } else if (rrn1Regex.test(rrn1Value)) {
-      setIsRrn1(true);
-      setRrnMessage('');
+    if (value.length <= 0) {
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '주민등록번호는 필수입니다' }
+      });
+    } else if (rrn1Regex.test(value)) {
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
     } else {
-      setRrnMessage('6자리의 앞자리를 바르게 입력해주세요');
-      setIsRrn1(false);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '6자리의 앞자리를 바르게 입력해주세요' }
+      });
     }
   }
 
   const onChangeUserRrn2 = (e) => {
     const rrn2Regex = /^[0-9]{7}$/;
-    const rrn2Value = e.target.value;
-    setUserRrn2(rrn2Value);
+    const { name, value } = e.target;
+    setUserRrn2(value);
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      user_rrn: `${userRrn1}-${rrn2Value}`,
+      user_rrn: `${userRrn1}-${value}`,
     }));
-    if (rrn2Value.length <= 0) {
-      setRrnMessage('주민등록번호는 필수입니다');
-      setIsRrn2(false);
-    } else if (rrn2Regex.test(rrn2Value)) {
-      setRrnMessage('');
-      setIsRrn2(true);
+    if (value.length <= 0) {
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '주민등록번호는 필수입니다' }
+      });
+    } else if (rrn2Regex.test(value)) {
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
     } else {
-      setRrnMessage('7자리의 뒷자리를 바르게 입력해주세요');
-      setIsRrn2(false);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '7자리의 뒷자리를 바르게 입력해주세요' }
+      });
     }
   }
 
@@ -209,8 +247,10 @@ const Join = () => {
 
     setFormData({ ...formData, [name]: value });
     if (!birthdayRegex.test(value)) {
-      setBirthdayMessage('0000-00-00 형식으로 작성해주세요')
-      setIsBirthday(false);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '0000-00-00 형식으로 작성해주세요' }
+      });
     } else {
       const [year, month, day] = value.split('-');
       const parsedYear = parseInt(year);
@@ -219,11 +259,16 @@ const Join = () => {
 
       if (parsedMonth >= 1 && parsedMonth <= 12 && parsedDay >= 1 && parsedDay <= 31) {
         // 유효한 날짜인 경우
-        setIsBirthday(true);
+        setErrorState({
+          ...errorState,
+          [name]: { isRight: true, message: '' }
+        });
         return;
       }
-      setIsBirthday(false);
-      setBirthdayMessage('유효하지 않은 날짜 형식입니다')
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '유효하지 않은 날짜 형식입니다' }
+      });
     }
   }
 
@@ -231,6 +276,8 @@ const Join = () => {
   const [emailId, setEmailId] = useState(''); //이메일 앞쪽 아이디
   const [emailProvider, setEmailProvider] = useState(''); // 이메일 서비스 선택
   const [customEmail, setCustomEmail] = useState(''); // 직접 입력한 이메일
+  const [isEmail1, setIsEmail1] = useState(false);
+  const [isEmail2, setIsEmail2] = useState(false);
 
   const onChangeEmailId = (e) => {
     const currentEmail = e.target.value;
@@ -240,6 +287,20 @@ const Join = () => {
       ...prevFormData,
       user_email: `${currentEmail}@${customEmail}`,
     }));
+
+    if (currentEmail.length <= 0) {
+      setErrorState({
+        ...errorState,
+        user_email: { isRight: false && isEmail2, message: '이메일은 필수 입력사항입니다' }
+      });
+      setIsEmail1(false);
+    } else {
+      setErrorState({
+        ...errorState,
+        user_email: { isRight: true && isEmail2, message: '' }
+      });
+      setIsEmail1(true);
+    }
   }
 
   const handleSelectEmailChange = (e) => {
@@ -260,7 +321,7 @@ const Join = () => {
     setEmailProvider(selectedValue); // 선택한 값을 상태로 설정
   };
 
-  //직업 유효성 검사
+  //직업 저장
   const onChangeJob = (e) => {
     const { name, value } = e.target;
 
@@ -391,6 +452,42 @@ const Join = () => {
     }
   }
 
+  //모든 필드가 유효성을 만족하는지
+  const isAllFieldsValid = () => {
+    for (const key in errorState) {
+      if (!errorState[key].isRight) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //필드 중 유효성을 만족하지 않는 필드 border red 주기
+  const addColorAllError = () => {
+    for (const key in errorState) {
+      if (!errorState[key].isRight) {
+        const errorField = document.querySelector(`input[name=${key}]`);
+        if (errorField) {
+          // className에 red추가
+        }
+      }
+    }
+  }
+
+  // 필드 중 유효성을 만족하지 않는 첫 번째 필드에 focus
+  const focusOnFirstError = () => {
+    for (const key in errorState) {
+      if (!errorState[key].isRight) {
+        const errorField = document.querySelector(`input[name=${key}]`);
+        if (errorField) {
+          errorField.focus();
+        }
+        break;
+      }
+    }
+  }
+
+  //회원가입 완료 버튼
   const handleJoinForm = (e) => {
     e.preventDefault();
 
@@ -468,7 +565,7 @@ const Join = () => {
                               </span>
                             </span>
                             {isIdHidden ? null : <span className="input-desc" id='idTextCorrect'>4~16자까지 영문/숫자만 허용</span>}
-                            {!isId && <span className="error-text-red">{idMessage}</span>}
+                            {!errorState['user_id'].isRight && <span className="error-text-red">{errorState['user_id'].message}</span>}
                           </td>
                         </tr>
 
@@ -486,7 +583,7 @@ const Join = () => {
                               <input type="password" name='user_pw' id="userPassword" value={formData.user_pw} onChange={onChangePassword} />
                             </span>
                             {isPwHidden ? null : <span>8~16자까지 모든 문자 + 숫자 + 특수문자 : 영문 대소문자는 구별하여 입력해 주세요</span>}
-                            {!isPassword && <span className="error-text-red">{passwordMessage}</span>}
+                            {!errorState['user_pw'].isRight && <span className="error-text-red">{errorState['user_pw'].message}</span>}
                           </td>
                         </tr>
 
@@ -501,9 +598,9 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="password" id="userPwCheck" value={passwordConfirm} onChange={onChangePasswordConfirm} />
+                              <input type="password" name='user_pw_confirm' id="userPwCheck" value={passwordConfirm} onChange={onChangePasswordConfirm} />
                             </span>
-                            {!isPasswordConfirm && <span className="error-text-red">{passwordConfirmMessage}</span>}
+                            {!errorState['user_pw_confirm'].isRight && <span className="error-text-red">{errorState['user_pw_confirm'].message}</span>}
                           </td>
                         </tr>
 
@@ -520,7 +617,7 @@ const Join = () => {
                             <span className="input-btn">
                               <input type="text" name='user_name' id="userName" value={formData.user_name} onChange={onChangeName} />
                             </span>
-                            {!isName && <span className='error-text-red'>{nameMessage}</span>}
+                            {!errorState['user_name'].isRight && <span className='error-text-red'>{errorState['user_name'].message}</span>}
                           </td>
                         </tr>
 
@@ -534,13 +631,14 @@ const Join = () => {
                             </label>
                           </th>
                           <td>
-                            <span className="input-btn">
+                            <div className="input-btn">
                               <input type='hidden' name='user_rrn' id="userRRN" value={formData.user_rrn} />
-                              <input type="text" id='userRRN1' value={userRrn1} onChange={onChangeUserRrn1} />
+                              <input type="text" name='user_rrn1' id='userRRN1' value={userRrn1} onChange={onChangeUserRrn1} />
                               <span>-</span>
-                              <input type="password" id='userRRN2' value={userRrn2} onChange={onChangeUserRrn2} />
-                            </span>
-                            {(!isRrn1 || !isRrn2) && <span className="error-text-red">{rrnMessage}</span>}
+                              <input type="password" id='userRRN2' name='user_rrn2' value={userRrn2} onChange={onChangeUserRrn2} />
+                            </div>
+                            {!errorState['user_rrn1'].isRight && <div className="error-text-red step-error">{errorState['user_rrn1'].message}</div>}
+                            {!errorState['user_rrn2'].isRight && <div className="error-text-red step-error">{errorState['user_rrn2'].message}</div>}
                           </td>
                         </tr>
 
@@ -557,7 +655,7 @@ const Join = () => {
                             <span className="input-btn">
                               <input type="text" name='user_birthdate' id="userBirth" placeholder='0000-00-00으로 작성' value={formData.user_birthdate} onChange={onChangeBirthday} />
                             </span>
-                            {!isBirthday && <span className='error-text-red'>{birthdayMessage}</span>}
+                            {!errorState['user_birthdate'].isRight && <span className='error-text-red'>{errorState['user_birthdate'].message}</span>}
                           </td>
                         </tr>
 
@@ -590,7 +688,7 @@ const Join = () => {
                               <option value='nate.com'>nate.com</option>
                               <option value='' selected="selected">직접입력</option>
                             </select>
-                            {(!isEmail1 || !isEmail2) && <span className='error-text-red'>{emailMessage}</span>}
+                            {(!isEmail1 || !isEmail2) && <span className='error-text-red'>{errorState['user_email'].message}</span>}
                           </td>
                         </tr>
 
@@ -610,6 +708,9 @@ const Join = () => {
                             <input title="핸드폰중간자리" name="hp_2" type="text" value={phone2} onChange={onChangePhone2} />
                             <span>-</span>
                             <input title="핸드폰뒷자리" name="hp_3" type="text" value={phone3} onChange={onChangePhone3} />
+                            <span className="id-check-btn">
+                              <a href="#" id="phoneCheck" className="check-btn">본인 인증</a>
+                            </span>
                             {(!isPhone1 || !isPhone2 || !isPhone3) && <span className="error-text-red">{phoneMessage}</span>}
                           </td>
                         </tr>
