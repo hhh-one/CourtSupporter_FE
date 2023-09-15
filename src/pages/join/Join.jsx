@@ -43,7 +43,7 @@ const Join = () => {
     user_rrn2: { isRight: false, message: '' },
     user_birthdate: { isRight: false, message: '' },
     user_email: { isRight: false, message: '' },
-    user_phone: { isRight: false, isRight1: false, isRight2: false, isRight3: false, message: '' },
+    user_phone: { isRight: false, message: '' },
     user_bank: { isRight: false, message: '' },
     user_bank_account: { isRight: false, message: '' },
     user_bank_holder: { isRight: false, message: '' },
@@ -55,13 +55,9 @@ const Join = () => {
   const [isPwHidden, setIsPwHidden] = useState(false);
 
   //오류 메시지 상태저장
-  const [phoneMessage, setPhoneMessage] = useState('');
   const [accountMessage, setAccountMessage] = useState('');
 
   //input 유효성 검사
-  const [isPhone1, setIsPhone1] = useState(false);
-  const [isPhone2, setIsPhone2] = useState(false);
-  const [isPhone3, setIsPhone3] = useState(false);
   const [isAccount1, setIsAccount1] = useState(false);
   const [isAccount2, setIsAccount2] = useState(false);
   const [isAccount3, setIsAccount3] = useState(false);
@@ -314,9 +310,18 @@ const Join = () => {
     if (selectedValue === '') {
       // 선택한 값이 빈 문자열인 경우 직접 입력 가능
       setCustomEmail('');
+      setErrorState({
+        ...errorState,
+        user_email: { isRight: isEmail1 && false, message: '이메일을 입력해주세요' }
+      });
     } else {
       // 선택한 값이 빈 문자열이 아닌 경우 해당 값을 입력란에 설정하고 입력란 비활성화
       setCustomEmail(selectedValue);
+      setErrorState({
+        ...errorState,
+        user_email: { isRight: isEmail1 && true, message: '' }
+      });
+
     }
     setEmailProvider(selectedValue); // 선택한 값을 상태로 설정
   };
@@ -353,6 +358,9 @@ const Join = () => {
   const [phone1, setPhone1] = useState('');
   const [phone2, setPhone2] = useState('');
   const [phone3, setPhone3] = useState('');
+  const [isPhone1, setIsPhone1] = useState(false);
+  const [isPhone2, setIsPhone2] = useState(false);
+  const [isPhone3, setIsPhone3] = useState(false);
 
   const onChangePhone1 = (e) => {
     const phone3Regex = /^[0-9]{3}$/;
@@ -364,10 +372,16 @@ const Join = () => {
       user_phone: `${currentPhone}-${phone2}-${phone3}`,
     }));
     if (phone3Regex.test(currentPhone)) {
-      setPhoneMessage('');
+      setErrorState({
+        ...errorState,
+        user_phone: { isRight: true && isPhone2 && isPhone3, message: '' }
+      });
       setIsPhone1(true);
     } else {
-      setPhoneMessage('휴대폰 번호를 정확히 입력해주세요');
+      setErrorState({
+        ...errorState,
+        user_phone: { isRight: false && isPhone2 && isPhone3, message: '휴대폰 번호를 정확히 입력해주세요' }
+      });
       setIsPhone1(false);
     }
   }
@@ -382,11 +396,17 @@ const Join = () => {
       user_phone: `${phone1}-${currentPhone}-${phone3}`,
     }));
     if (phone4Regex.test(currentPhone)) {
-      setPhoneMessage('');
-      setIsPhone1(true);
+      setErrorState({
+        ...errorState,
+        user_phone: { isRight: isPhone1 && true && isPhone3, message: '' }
+      });
+      setIsPhone2(true);
     } else {
-      setPhoneMessage('휴대폰 번호를 정확히 입력해주세요');
-      setIsPhone1(false);
+      setErrorState({
+        ...errorState,
+        user_phone: { isRight: isPhone1 && false && isPhone3, message: '휴대폰 번호를 정확히 입력해주세요' }
+      });
+      setIsPhone2(false);
     }
   }
 
@@ -400,11 +420,17 @@ const Join = () => {
       user_phone: `${phone1}-${phone2}-${currentPhone}`,
     }));
     if (phone4Regex.test(currentPhone)) {
-      setPhoneMessage('');
-      setIsPhone1(true);
+      setErrorState({
+        ...errorState,
+        user_phone: { isRight: isPhone1 && isPhone2 && true, message: '' }
+      });
+      setIsPhone3(true);
     } else {
-      setPhoneMessage('휴대폰 번호를 정확히 입력해주세요');
-      setIsPhone1(false);
+      setErrorState({
+        ...errorState,
+        user_phone: { isRight: isPhone1 && isPhone2 && false, message: '휴대폰 번호를 정확히 입력해주세요' }
+      });
+      setIsPhone3(false);
     }
   }
 
@@ -491,14 +517,19 @@ const Join = () => {
   const handleJoinForm = (e) => {
     e.preventDefault();
 
-    api.apis.insert_users(formData)
-      .then(response => {
-        if (response.data === 1) {
-          navigate(utils.URL.HOME.JOINSUCCESS);
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+    //모든 유효성 만족
+    if (isAllFieldsValid()) {
+      api.apis.insert_users(formData)
+        .then(response => {
+          if (response.data === 1) {
+            navigate(utils.URL.HOME.JOINSUCCESS);
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+    } else {
+      focusOnFirstError();
+    }
   }
 
   if (addressRef === null) {
@@ -676,6 +707,11 @@ const Join = () => {
                               onChange={(e) => {
                                 setCustomEmail(e.target.value);
                                 setFormData((prevFormData) => ({ ...prevFormData, user_email: `${emailId}@${e.target.value}`, }));
+                                setIsEmail2(true);
+                                setErrorState({
+                                  ...errorState,
+                                  user_email: { isRight: isEmail1 && true, message: '' }
+                                });
                               }} /> : null}
                             <select className="selC" name="email_select" id="email_select" title="전자우편서비스선택" value={emailProvider} onChange={handleSelectEmailChange}>
                               <option value='hanmail.net'>hanmail.net</option>
@@ -711,7 +747,7 @@ const Join = () => {
                             <span className="id-check-btn">
                               <a href="#" id="phoneCheck" className="check-btn">본인 인증</a>
                             </span>
-                            {(!isPhone1 || !isPhone2 || !isPhone3) && <span className="error-text-red">{phoneMessage}</span>}
+                            {(!isPhone1 || !isPhone2 || !isPhone3) && <span className="error-text-red">{errorState['user_phone'].message}</span>}
                           </td>
                         </tr>
 

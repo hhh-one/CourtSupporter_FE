@@ -35,20 +35,23 @@ const JoinSuccess = () => {
                 </ol>
 
                 <div class="success-wrap">
-                  <div class="success-img">
-                    <img src={require('images/check.png').default} alt="완료" />
-                  </div>
-                  <div class="success-text">
-                    <p class="text-title">회원가입이 완료되었습니다.</p>
-                    <div class="id-wrap">
-                      <span>아이디 : hyewon0</span>
+                  <div class="success-checkmark">
+                    <div class="check-icon">
+                      <span class="icon-line line-tip"></span>
+                      <span class="icon-line line-long"></span>
+                      <div class="icon-circle"></div>
+                      <div class="icon-fix"></div>
                     </div>
-                    <p class="text-info">추가 정보를 입력하시면 생활에 필요한 정보를 한 번에 안내받고, 반복되는 정보입력의 불편을 해소할 수 있습니다.</p>
                   </div>
-                </div>
-
-                <div class="btnbox btnbox02">
-                  <a class="btnfb7" onClick={() => navigate(utils.URL.HOME.LOGIN)}>로그인화면 가기</a>
+                  <center>
+                    <div class="success-text">
+                      <p class="text-title">회원가입이 완료되었습니다.</p>
+                      <p class="text-info">추가 정보를 입력하시면 생활에 필요한 정보를 한 번에 안내받고, 반복되는 정보입력의 불편을 해소할 수 있습니다.</p>
+                    </div>
+                    <div class="btnbox btnbox02">
+                      <a class="btnfb7" onClick={() => navigate(utils.URL.HOME.LOGIN)}>로그인화면 가기</a>
+                    </div>
+                  </center>
                 </div>
               </div>
             </div>

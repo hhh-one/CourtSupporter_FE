@@ -73,7 +73,7 @@
  }
 
  /* 푸터 스타일 */
- footer {
+ .footer {
    background-color: #dadada;
    padding: 30px 0;
    color: #666;
