@@ -7,11 +7,13 @@ import * as style from 'style'
 import * as utils from 'utils'
 import * as pages from 'pages'
 import * as hooks from 'hooks'
+import { ScrollToTop } from './hooks';
 
 const App = () => {
   return (
     <ThemeProvider theme={style.Theme}>
       <style.GlobalStyles />
+      {/* <ScrollToTop /> */}
       <Router>
         <Routes>
           <Route path={utils.URL.HOME.LOGIN} element={<pages.Signin />} />

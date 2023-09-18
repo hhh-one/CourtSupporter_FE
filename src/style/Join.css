@@ -153,8 +153,17 @@
   margin: 0 10px;
 }
 
-.popT input {
-  width: 28.5%;
+.join .popT input {
+  width: 250px;
+}
+
+.join input:focus {
+  outline: none;
+  border: 1px #000 solid;
+}
+
+.join input.error-red:focus {
+  border: 1px #ec464d solid
 }
 
 .popT .uptr04 input {

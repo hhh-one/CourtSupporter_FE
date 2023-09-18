@@ -35,6 +35,7 @@ const JoinAccept = () => {
     e.preventDefault();
 
     if (isChecked1 === 'Y' && isChecked2 === 'Y') {
+      window.scrollTo(0, 0);
       navigate(utils.URL.HOME.JOIN);
     } else {
       alert('약관 동의는 필수입니다.')

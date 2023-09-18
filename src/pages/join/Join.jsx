@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Footer, Header } from '../../components';
 import { useNavigate } from 'react-router-dom';
 import '../../style/Join.css'
@@ -6,7 +6,7 @@ import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
 import * as api from 'api';
 import * as utils from 'utils';
-import { isError } from 'lodash';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Join = () => {
   const navigate = useNavigate();
@@ -34,18 +34,20 @@ const Join = () => {
 
   //유효성 검사 & 오류메시지
   const [errorState, setErrorState] = useState({
-    user_id: { isRight: false, message: '' },
-    user_proper_num: { isRight: false, message: '' },
+    user_id: { isRight: false, message: '', messageName: '아이디는' },
     user_pw: { isRight: false, message: '' },
     user_pw_confirm: { isRight: false, message: '' },
     user_name: { isRight: false, message: '' },
     user_rrn1: { isRight: false, message: '' },
     user_rrn2: { isRight: false, message: '' },
     user_birthdate: { isRight: false, message: '' },
-    user_email: { isRight: false, message: '' },
-    user_phone: { isRight: false, message: '' },
-    user_bank: { isRight: false, message: '' },
+    email1: { isRight: false, message: '' },
+    email2: { isRight: false, message: '' },
+    user_phone1: { isRight: false, message: '' },
+    user_phone2: { isRight: false, message: '' },
+    user_phone3: { isRight: false, message: '' },
     user_bank_account: { isRight: false, message: '' },
+    user_bank: { isRight: false, message: '' },
     user_bank_holder: { isRight: false, message: '' },
   });
 
@@ -53,14 +55,6 @@ const Join = () => {
   const [isIdHidden, setIsIdHidden] = useState(false);
   //비밀번호 정보 숨기기
   const [isPwHidden, setIsPwHidden] = useState(false);
-
-  //오류 메시지 상태저장
-  const [accountMessage, setAccountMessage] = useState('');
-
-  //input 유효성 검사
-  const [isAccount1, setIsAccount1] = useState(false);
-  const [isAccount2, setIsAccount2] = useState(false);
-  const [isAccount3, setIsAccount3] = useState(false);
 
   //주소 입력값
   const [isAddressOpen, setIsAddressOpen] = useState(false);
@@ -89,6 +83,11 @@ const Join = () => {
     const idRegex = /^[A-Za-z0-9]{4,16}$/;
     const { name, value } = e.target;
 
+    setUsableId(false);
+    const idCheckField = document.getElementById('idCheck');
+    idCheckField.innerHTML = '중복확인';
+    idCheckField.style.background = '#616161';
+
     setFormData({ ...formData, [name]: value });
     if (value.length < 4) {
       setErrorState({
@@ -110,6 +109,35 @@ const Join = () => {
       setIsIdHidden(true);
     }
   };
+
+  //아이디 중복확인
+  const [usableId, setUsableId] = useState(false);
+
+  const checkDuplicateId = (e) => {
+    // 사용자가 입력한 아이디 가져오기
+    const userId = formData.user_id;
+
+    api.apis.check_id(userId)
+      .then(response => {
+        if (response.data === 1) {
+          setErrorState({
+            ...errorState,
+            user_id: { isRight: false, message: '중복된 아이디입니다. 다시 입력해주세요' }
+          });
+          setUsableId(false);
+        } else {
+          setErrorState({
+            ...errorState,
+            user_id: { isRight: true, message: '' }
+          });
+          e.target.innerHTML = '✔';
+          e.target.style.background = 'rgb(11, 38, 110)';
+          setUsableId(true);
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+  }
 
 
   //password 유효성 검사
@@ -137,6 +165,12 @@ const Join = () => {
       });
       setIsPwHidden(true);
     }
+  };
+
+  //비밀번호 미리보기 기능
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   //비밀번호 확인
@@ -287,13 +321,13 @@ const Join = () => {
     if (currentEmail.length <= 0) {
       setErrorState({
         ...errorState,
-        user_email: { isRight: false && isEmail2, message: '이메일은 필수 입력사항입니다' }
+        email1: { isRight: false, message: '이메일은 필수 입력사항입니다' }
       });
       setIsEmail1(false);
     } else {
       setErrorState({
         ...errorState,
-        user_email: { isRight: true && isEmail2, message: '' }
+        email1: { isRight: true, message: '' }
       });
       setIsEmail1(true);
     }
@@ -312,14 +346,14 @@ const Join = () => {
       setCustomEmail('');
       setErrorState({
         ...errorState,
-        user_email: { isRight: isEmail1 && false, message: '이메일을 입력해주세요' }
+        email2: { isRight: false, message: '이메일을 입력해주세요' }
       });
     } else {
       // 선택한 값이 빈 문자열이 아닌 경우 해당 값을 입력란에 설정하고 입력란 비활성화
       setCustomEmail(selectedValue);
       setErrorState({
         ...errorState,
-        user_email: { isRight: isEmail1 && true, message: '' }
+        email2: { isRight: true, message: '' }
       });
 
     }
@@ -374,13 +408,13 @@ const Join = () => {
     if (phone3Regex.test(currentPhone)) {
       setErrorState({
         ...errorState,
-        user_phone: { isRight: true && isPhone2 && isPhone3, message: '' }
+        user_phone1: { isRight: true, message: '' }
       });
       setIsPhone1(true);
     } else {
       setErrorState({
         ...errorState,
-        user_phone: { isRight: false && isPhone2 && isPhone3, message: '휴대폰 번호를 정확히 입력해주세요' }
+        user_phone1: { isRight: false, message: '휴대폰 번호를 정확히 입력해주세요' }
       });
       setIsPhone1(false);
     }
@@ -398,13 +432,13 @@ const Join = () => {
     if (phone4Regex.test(currentPhone)) {
       setErrorState({
         ...errorState,
-        user_phone: { isRight: isPhone1 && true && isPhone3, message: '' }
+        user_phone2: { isRight: true, message: '' }
       });
       setIsPhone2(true);
     } else {
       setErrorState({
         ...errorState,
-        user_phone: { isRight: isPhone1 && false && isPhone3, message: '휴대폰 번호를 정확히 입력해주세요' }
+        user_phone2: { isRight: false, message: '휴대폰 번호를 정확히 입력해주세요' }
       });
       setIsPhone2(false);
     }
@@ -422,30 +456,36 @@ const Join = () => {
     if (phone4Regex.test(currentPhone)) {
       setErrorState({
         ...errorState,
-        user_phone: { isRight: isPhone1 && isPhone2 && true, message: '' }
+        user_phone3: { isRight: true, message: '' }
       });
       setIsPhone3(true);
     } else {
       setErrorState({
         ...errorState,
-        user_phone: { isRight: isPhone1 && isPhone2 && false, message: '휴대폰 번호를 정확히 입력해주세요' }
+        user_phone3: { isRight: false, message: '휴대폰 번호를 정확히 입력해주세요' }
       });
       setIsPhone3(false);
     }
   }
 
   //계좌번호 유효성 검사
+  const [customBank, setCustomBank] = useState('');
+
   const onChangeBankAccount = (e) => {
     const accountRegex = /^[0-9]{1,}$/;
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
     if (accountRegex.test(value)) {
-      setAccountMessage('');
-      setIsAccount1(true);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
     } else {
-      setAccountMessage('계좌번호를 숫자만 입력해주세요')
-      setIsAccount1(false);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '계좌번호를 숫자만 입력해주세요' }
+      });
     }
   }
 
@@ -454,12 +494,16 @@ const Join = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     if (value.length > 1) {
-      setAccountMessage('');
       setIsCustomBank(false);
-      setIsAccount1(true);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
     } else {
-      setAccountMessage('은행을 선택/입력해주세요');
-      setIsAccount1(false);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '은행을 선택/입력해주세요' }
+      });
     }
   }
 
@@ -470,11 +514,15 @@ const Join = () => {
     setFormData({ ...formData, [name]: value });
 
     if (holderRegex.test(value)) {
-      setAccountMessage('');
-      setIsAccount1(true);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: true, message: '' }
+      });
     } else {
-      setAccountMessage('예금주를 정확히 입력해주세요');
-      setIsAccount1(false);
+      setErrorState({
+        ...errorState,
+        [name]: { isRight: false, message: '예금주를 정확히 입력해주세요' }
+      });
     }
   }
 
@@ -488,24 +536,15 @@ const Join = () => {
     return true;
   }
 
-  //필드 중 유효성을 만족하지 않는 필드 border red 주기
-  const addColorAllError = () => {
-    for (const key in errorState) {
-      if (!errorState[key].isRight) {
-        const errorField = document.querySelector(`input[name=${key}]`);
-        if (errorField) {
-          // className에 red추가
-        }
-      }
-    }
-  }
 
   // 필드 중 유효성을 만족하지 않는 첫 번째 필드에 focus
   const focusOnFirstError = () => {
     for (const key in errorState) {
+
       if (!errorState[key].isRight) {
         const errorField = document.querySelector(`input[name=${key}]`);
         if (errorField) {
+          errorField.classList.add('error-red');
           errorField.focus();
         }
         break;
@@ -517,17 +556,24 @@ const Join = () => {
   const handleJoinForm = (e) => {
     e.preventDefault();
 
+    if (!usableId) {
+      alert('아이디 중복 확인을 눌러주세요')
+      return
+    }
+
     //모든 유효성 만족
     if (isAllFieldsValid()) {
       api.apis.insert_users(formData)
         .then(response => {
           if (response.data === 1) {
+            window.scrollTo(0, 0);
             navigate(utils.URL.HOME.JOINSUCCESS);
           }
         }).catch(err => {
           console.log(err)
         })
     } else {
+      alert('필드를 알맞게 입력해주세요')
       focusOnFirstError();
     }
   }
@@ -592,7 +638,7 @@ const Join = () => {
                             <span className="input-btn">
                               <input type="text" name='user_id' id="userId" value={formData.user_id} onChange={onChangeId} />
                               <span className="id-check-btn">
-                                <a href="#" id="idCheck" className="check-btn">중복확인</a>
+                                <a href="#" id="idCheck" className="check-btn" onClick={checkDuplicateId}>중복확인</a>
                               </span>
                             </span>
                             {isIdHidden ? null : <span className="input-desc" id='idTextCorrect'>4~16자까지 영문/숫자만 허용</span>}
@@ -610,11 +656,16 @@ const Join = () => {
                             </label>
                           </th>
                           <td>
-                            <span className="input-btn">
-                              <input type="password" name='user_pw' id="userPassword" value={formData.user_pw} onChange={onChangePassword} />
-                            </span>
-                            {isPwHidden ? null : <span>8~16자까지 모든 문자 + 숫자 + 특수문자 : 영문 대소문자는 구별하여 입력해 주세요</span>}
-                            {!errorState['user_pw'].isRight && <span className="error-text-red">{errorState['user_pw'].message}</span>}
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <span className="input-btn">
+                                <input type={showPassword ? "text" : "password"} name='user_pw' id="userPassword" value={formData.user_pw} onChange={onChangePassword} />
+                              </span>
+                              <span onClick={togglePasswordVisibility}>
+                                {showPassword ? <AiFillEyeInvisible style={{ fontSize: '22px' }} /> : <AiFillEye style={{ fontSize: '22px' }} />}
+                              </span>
+                              {isPwHidden ? null : <span style={{ marginLeft: '10px' }}>8~16자까지 모든 문자 + 숫자 + 특수문자 : 영문 대소문자는 구별하여 입력해 주세요</span>}
+                              {!errorState['user_pw'].isRight && <span style={{ marginLeft: '10px' }} className="error-text-red">{errorState['user_pw'].message}</span>}
+                            </div>
                           </td>
                         </tr>
 
@@ -710,7 +761,7 @@ const Join = () => {
                                 setIsEmail2(true);
                                 setErrorState({
                                   ...errorState,
-                                  user_email: { isRight: isEmail1 && true, message: '' }
+                                  email2: { isRight: true, message: '' }
                                 });
                               }} /> : null}
                             <select className="selC" name="email_select" id="email_select" title="전자우편서비스선택" value={emailProvider} onChange={handleSelectEmailChange}>
@@ -724,7 +775,8 @@ const Join = () => {
                               <option value='nate.com'>nate.com</option>
                               <option value='' selected="selected">직접입력</option>
                             </select>
-                            {(!isEmail1 || !isEmail2) && <span className='error-text-red'>{errorState['user_email'].message}</span>}
+                            {(!isEmail1 || !isEmail2) && <div className='error-text-red'>{errorState['email1'].message}</div>}
+                            {(!isEmail1 || !isEmail2) && <div className='error-text-red'>{errorState['email2'].message}</div>}
                           </td>
                         </tr>
 
@@ -739,15 +791,12 @@ const Join = () => {
                           </th>
                           <td className="uptr04">
                             <input type='hidden' id="userPhone" name='user_phone' value={formData.user_phone} />
-                            <input title="핸드폰앞자리" name="hp_1" type="text" value={phone1} onChange={onChangePhone1} />
+                            <input title="핸드폰앞자리" name="user_phone1" type="text" value={phone1} onChange={onChangePhone1} />
                             <span>-</span>
-                            <input title="핸드폰중간자리" name="hp_2" type="text" value={phone2} onChange={onChangePhone2} />
+                            <input title="핸드폰중간자리" name="user_phone2" type="text" value={phone2} onChange={onChangePhone2} />
                             <span>-</span>
-                            <input title="핸드폰뒷자리" name="hp_3" type="text" value={phone3} onChange={onChangePhone3} />
-                            <span className="id-check-btn">
-                              <a href="#" id="phoneCheck" className="check-btn">본인 인증</a>
-                            </span>
-                            {(!isPhone1 || !isPhone2 || !isPhone3) && <span className="error-text-red">{errorState['user_phone'].message}</span>}
+                            <input title="핸드폰뒷자리" name="user_phone3" type="text" value={phone3} onChange={onChangePhone3} />
+                            {(!isPhone1 || !isPhone2 || !isPhone3) && <span className="error-text-red">{errorState['user_phone1'].message}</span>}
                           </td>
                         </tr>
 
@@ -799,9 +848,10 @@ const Join = () => {
                           <td>
                             <span className='account-text4'>계좌번호</span>
                             <input type="text" title="계좌정보" name="user_bank_account" id="user_bank_account" value={formData.user_bank_account} onChange={onChangeBankAccount} />
+                            {!errorState['user_bank_account'].isRight && <div className="error-text-red">{errorState['user_bank_account'].message}</div>}
                             <div className='account-div'>
                               <span className='account-text3'>은행명</span>
-                              {isCustomBank ? <input title="은행명" name="user_bank" type="text" id="user_bank" value={formData.user_bank} /> : null}
+                              {isCustomBank ? <input title="은행명" name="user_bank" type="text" id="user_bank" value={customBank} /> : null}
                               <select className="selC" name="user_bank" id="account_select" title="계좌정보선택" value={formData.user_bank} onChange={onChangeBank}>
                                 <option value='국민'>국민</option>
                                 <option value='신한'>신한</option>
@@ -814,11 +864,12 @@ const Join = () => {
                                 <option value='' selected>직접입력</option>
                               </select>
                             </div>
+                            {!errorState['user_bank'].isRight && <div className="error-text-red">{errorState['user_bank'].message}</div>}
                             <div className='account-div'>
                               <span className='account-text3'>예금주</span>
                               <input title="예금주" name="user_bank_holder" type="text" id="user_bank_holder" value={formData.user_bank_holder} onChange={onChangeBankHolder} />
                             </div>
-                            {(!isAccount1 || !isAccount2 || !isAccount3) && <span className="error-text-red">{accountMessage}</span>}
+                            {!errorState['user_bank_holder'].isRight && <div className="error-text-red">{errorState['user_bank_holder'].message}</div>}
                           </td>
                         </tr>
                       </tbody>

@@ -29,7 +29,12 @@ const Signin = () => {
 
       window.location.href = 'http://localhost:8788/';
     }).catch(err => {
-      console.log(err);
+      setLoginInfo({
+        member_id: '',
+        member_password: '',
+        member_role: ''
+      })
+      alert('로그인에 실패하였습니다. 다시 한 번 시도해주세요.')
     })
   }
 
@@ -51,7 +56,7 @@ const Signin = () => {
                   <input type="text" onChange={e => setLoginInfo({
                     ...loginInfo,
                     member_id: e.target.value
-                  })} id="user-id" placeholder="아이디를 입력하세요" />
+                  })} id="user-id" placeholder="아이디를 입력하세요" value={loginInfo.member_id} />
                 </div>
                 <p className="input-info">영문, 숫자 조합하여 4~16자 입력</p>
                 <div className="input-box">
@@ -59,7 +64,7 @@ const Signin = () => {
                   <input type="password" onChange={e => setLoginInfo({
                     ...loginInfo,
                     member_password: e.target.value
-                  })} id="user-pw" placeholder="비밀번호를 입력하세요" />
+                  })} id="user-pw" placeholder="비밀번호를 입력하세요" value={loginInfo.member_password} />
                 </div>
                 <div className="signin-btn-wrap">
                   <button type="button" onClick={() => login()} className="button-type-blue login-btn">아이디 로그인</button>
@@ -68,7 +73,10 @@ const Signin = () => {
               <div className="signin-other-wrap">
                 <div className="other-box">
                   <span className="join-tap">
-                    <a onClick={() => navigate(utils.URL.HOME.JOINACCEPT)}>회원가입</a>
+                    <a onClick={() => {
+                      window.scrollTo(0, 0);
+                      navigate(utils.URL.HOME.JOINACCEPT)
+                    }}>회원가입</a>
                   </span>
                   <div className="find-info">
                     <ul>
