@@ -328,6 +328,14 @@
   margin: 5px 10px;
 }
 
+.join .input-email-size {
+  width: 13% !important;
+}
+
+.join .input-email-num {
+  margin-top: 10px;
+}
+
 .btnbox {
   text-align: center;
   margin-top: 40px;

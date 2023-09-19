@@ -87,6 +87,7 @@ const Join = () => {
     const idCheckField = document.getElementById('idCheck');
     idCheckField.innerHTML = '중복확인';
     idCheckField.style.background = '#616161';
+    idCheckField.style.color = '#fff';
 
     setFormData({ ...formData, [name]: value });
     if (value.length < 4) {
@@ -131,7 +132,8 @@ const Join = () => {
             user_id: { isRight: true, message: '' }
           });
           e.target.innerHTML = '✔';
-          e.target.style.background = 'rgb(11, 38, 110)';
+          e.target.style.color = 'rgb(11, 38, 110)';
+          e.target.style.background = 'none';
           setUsableId(true);
         }
       }).catch(err => {
@@ -275,11 +277,26 @@ const Join = () => {
     const birthdayRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
     const { name, value } = e.target;
 
-    setFormData({ ...formData, [name]: value });
+    const inputValue = value.replace(/\D/g, '');
+
+    if (inputValue.length === 5) {
+      let formattedValue = inputValue.replace(/(\d{4})(\d{1})/, '$1-$2');
+      setFormData({ ...formData, [name]: formattedValue });
+    } else if (inputValue.length === 6) {
+      let formattedValue = inputValue.replace(/(\d{4})(\d{2})/, '$1-$2');
+      setFormData({ ...formData, [name]: formattedValue });
+    } else if (inputValue.length === 7) {
+      let formattedValue = inputValue.replace(/(\d{4})(\d{2})(\d{1})/, '$1-$2-$3');
+      setFormData({ ...formData, [name]: formattedValue });
+    } else {
+      let formattedValue = inputValue.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+      setFormData({ ...formData, [name]: formattedValue });
+    }
+
     if (!birthdayRegex.test(value)) {
       setErrorState({
         ...errorState,
-        [name]: { isRight: false, message: '0000-00-00 형식으로 작성해주세요' }
+        [name]: { isRight: false, message: '올바른 생년월일을 입력하세요' }
       });
     } else {
       const [year, month, day] = value.split('-');
@@ -301,6 +318,7 @@ const Join = () => {
       });
     }
   }
+
 
   //이메일 유효성 검사
   const [emailId, setEmailId] = useState(''); //이메일 앞쪽 아이디
@@ -359,6 +377,48 @@ const Join = () => {
     }
     setEmailProvider(selectedValue); // 선택한 값을 상태로 설정
   };
+
+  //이메일 인증번호 전송
+  const [clickSendEmail, setClickSendEmail] = useState(false);
+  const [rightEmailNum, setRightEmailNum] = useState('');
+
+  const sendEmail = (e) => {
+    setClickSendEmail(true);
+
+    api.apis.send_email(formData)
+      .then(response => {
+        console.log(response.data)
+        setRightEmailNum(response.data);
+      }).catch(err => {
+        console.log(err)
+      })
+  }
+
+  //인증번호 입력
+  const [emailNum, setEmailNum] = useState(''); //입력한 인증번호
+  const [clickEmailNum, setClickEmailNum] = useState(false); //인증번호 확인버튼 클릭여부
+  const [emailNumErrorState, setEmailNumErrorState] = useState({ isRight: false, message: '' });
+
+  const onChangeEmailNum = (e) => {
+    const value = e.target.value;
+    setEmailNum(value);
+  }
+
+  //인증번호 확인
+  const confirmEmailNum = (e) => {
+    console.log(emailNum)
+    console.log(rightEmailNum)
+    console.log(emailNum == rightEmailNum)
+    if (emailNum == rightEmailNum) {
+      e.target.innerHTML = '✔';
+      e.target.style.color = 'rgb(11, 38, 110)';
+      e.target.style.background = 'none';
+      setClickEmailNum(true);
+      setEmailNumErrorState({ isRight: true, message: '' });
+    } else {
+      setEmailNumErrorState({ isRight: false, message: '인증번호를 정확히 입력해주세요' });
+    }
+  }
 
   //직업 저장
   const onChangeJob = (e) => {
@@ -494,7 +554,7 @@ const Join = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     if (value.length > 1) {
-      setIsCustomBank(false);
+      setIsCustomBank(true);
       setErrorState({
         ...errorState,
         [name]: { isRight: true, message: '' }
@@ -556,13 +616,23 @@ const Join = () => {
   const handleJoinForm = (e) => {
     e.preventDefault();
 
-    if (!usableId) {
-      alert('아이디 중복 확인을 눌러주세요')
-      return
-    }
-
     //모든 유효성 만족
     if (isAllFieldsValid()) {
+      if (!usableId) {
+        alert('아이디 중복 확인을 눌러주세요')
+        return
+      }
+
+      if (!clickSendEmail) {
+        alert('이메일로 인증번호 발송은 필수입니다')
+        return
+      }
+
+      if (!clickEmailNum) {
+        alert('알맞은 인증번호를 입력해주세요')
+        return
+      }
+
       api.apis.insert_users(formData)
         .then(response => {
           if (response.data === 1) {
@@ -735,7 +805,7 @@ const Join = () => {
                           </th>
                           <td>
                             <span className="input-btn">
-                              <input type="text" name='user_birthdate' id="userBirth" placeholder='0000-00-00으로 작성' value={formData.user_birthdate} onChange={onChangeBirthday} />
+                              <input type="text" name='user_birthdate' id="userBirth" placeholder='숫자로 8자리 작성' value={formData.user_birthdate} onChange={onChangeBirthday} />
                             </span>
                             {!errorState['user_birthdate'].isRight && <span className='error-text-red'>{errorState['user_birthdate'].message}</span>}
                           </td>
@@ -752,7 +822,7 @@ const Join = () => {
                           </th>
                           <td className="">
                             <input type='hidden' name='user_email' value={formData.user_email} />
-                            <input type="text" title="전자우편아이디" className='input-email1' name="email1" id="userEmail" value={emailId} onChange={onChangeEmailId} />
+                            <input type="text" title="전자우편아이디" className='input-email1 input-email-size' name="email1" id="userEmail" value={emailId} onChange={onChangeEmailId} />
                             <span>@</span>
                             {emailProvider === '' ? <input type="text" title="전자우편서비스" name="email2" id="email-provider" value={customEmail}
                               onChange={(e) => {
@@ -775,8 +845,18 @@ const Join = () => {
                               <option value='nate.com'>nate.com</option>
                               <option value='' selected="selected">직접입력</option>
                             </select>
-                            {(!isEmail1 || !isEmail2) && <div className='error-text-red'>{errorState['email1'].message}</div>}
-                            {(!isEmail1 || !isEmail2) && <div className='error-text-red'>{errorState['email2'].message}</div>}
+                            <span className="id-check-btn">
+                              <a href="#" id="EmailCheck" className="check-btn" onClick={sendEmail}>인증번호 발송</a>
+                            </span>
+                            {clickSendEmail && <div className='input-email-num'>
+
+                              <input type='text' placeholder='인증번호 입력' value={emailNum} onChange={onChangeEmailNum} />
+
+                              <span className="id-check-btn">
+                                <a href="#" id="EmailCheck" className="check-btn" onClick={confirmEmailNum}>확인</a>
+                              </span>
+
+                              {!emailNumErrorState.isRight && <span className="error-text-red">{emailNumErrorState.message}</span>}</div>}
                           </td>
                         </tr>
 

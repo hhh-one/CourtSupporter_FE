@@ -13,7 +13,6 @@ const App = () => {
   return (
     <ThemeProvider theme={style.Theme}>
       <style.GlobalStyles />
-      {/* <ScrollToTop /> */}
       <Router>
         <Routes>
           <Route path={utils.URL.HOME.LOGIN} element={<pages.Signin />} />

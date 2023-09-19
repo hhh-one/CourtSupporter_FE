@@ -34,6 +34,7 @@ const Signin = () => {
         member_password: '',
         member_role: ''
       })
+      console.log(err);
       alert('로그인에 실패하였습니다. 다시 한 번 시도해주세요.')
     })
   }

@@ -25,4 +25,5 @@ export const apis = {
   insert_users: params => instance.post(`/users/joinForm`, params),
   login: loginInfo => instance.post(`/users/login`, loginInfo),
   check_id: userId => instance.post(`/users/checkId`, userId),
+  send_email: params => instance.post(`/users/mail`, params),
 };
