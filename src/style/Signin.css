@@ -72,8 +72,9 @@
 .signin .form-wrap .input-info {
   margin-left: 90px;
   line-height: 30px;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: -1px;
+  font-weight: bold;
 }
 
 .signin .form-wrap .id-save {
@@ -263,8 +264,8 @@
   overflow-wrap: break-word;
   word-break: keep-all;
   line-height: 1.7;
-  letter-spacing: -2px;
-  font-weight: 500;
+  letter-spacing: -1px;
+  font-weight: bold;
 }
 
 .signin .signin-wrap .infor-text-box .inbox-text::before {

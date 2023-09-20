@@ -100,9 +100,9 @@
 }
 
 .join .accept-contents .contents-inner .process li .process-text {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
 
 }
 
@@ -124,7 +124,7 @@
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -1px;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 .join .agree-wrap .agree-tit {
@@ -136,7 +136,7 @@
   color: #034273;
   font-size: 13px;
   line-height: 1.5;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
   margin-top: 25px;
 }
 
@@ -148,7 +148,8 @@
   height: 200px;
   font-size: 13px;
   line-height: 1.5;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
+  font-weight: bold;
   color: #333;
 }
 
@@ -157,8 +158,9 @@
   text-align: center;
   font-size: 13px;
   line-height: 1.5;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
   color: #333;
+  font-weight: bold;
 }
 
 .join .agree-wrap .check-area .list {

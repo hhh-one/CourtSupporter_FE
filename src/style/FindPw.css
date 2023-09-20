@@ -18,6 +18,9 @@
 
 .form-wrap .find-info {
   margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: -1px;
 }
 
 .form-wrap .input-box {

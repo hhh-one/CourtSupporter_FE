@@ -63,9 +63,10 @@ const FindPw = () => {
               setRightEmailNum(response.data);
             }).catch(err => {
               console.log(err)
+              alert('이메일 발송에 실패했습니다. 다시 시도해주세요')
             })
         } else {
-          alert('회원이 아닙니다')
+          alert('등록된 회원 정보가 없습니다')
           return
         }
       }).catch(err => {

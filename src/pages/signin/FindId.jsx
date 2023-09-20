@@ -33,17 +33,19 @@ const FindId = () => {
     setEmailNum(inputValue);
   }
 
+  const [resultId, setResultId] = useState('');
+
   //인증번호 전송
   const [clickSendEmail, setClickSendEmail] = useState(false);
   const [rightEmailNum, setRightEmailNum] = useState('');
 
   const sendEmail = (e) => {
     e.preventDefault();
-    //유효성 검사 처리 해야될 부분
 
     api.apis.find_users(inputData)
       .then(response => {
         console.log(response.data)
+        setResultId(response.data);
 
         //해당하는 회원이 있을 때
         if (response.data != '') {
@@ -55,6 +57,7 @@ const FindId = () => {
               setRightEmailNum(response.data);
             }).catch(err => {
               console.log(err)
+              alert('이메일 발송에 실패했습니다. 다시 시도해주세요')
             })
         } else {
           alert('회원이 아닙니다')
@@ -75,7 +78,7 @@ const FindId = () => {
     }
 
     if (emailNum == rightEmailNum) {
-      navigate(utils.URL.HOME.IDSUCCESS);
+      navigate(utils.URL.HOME.IDSUCCESS, { state: resultId });
     } else {
       alert('알맞은 인증번호를 입력해주세요')
     }

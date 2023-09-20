@@ -100,9 +100,9 @@
 }
 
 .join .success-contents .contents-inner .process li .process-text {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
 
 }
 
@@ -139,8 +139,8 @@
 }
 
 .join .success-contents .contents-inner .success-wrap .success-text .text-info {
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 15px;
+  font-weight: bold;
   padding: 15px 0 0;
   letter-spacing: -1px;
 }
