@@ -1,0 +1,93 @@
+.form-wrap {
+  margin: 0;
+  padding: 54px 99px 55px 99px;
+  border: 1px solid #d3d3d3;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.form-wrap .findpw-box-wrap {
+  min-width: 420px;
+  margin: 35px auto 50px;
+}
+
+.form-wrap .findpw-input {
+  width: 660px;
+  margin: 0 auto;
+}
+
+.form-wrap .find-info {
+  margin-bottom: 15px;
+}
+
+.form-wrap .input-box {
+  padding: 0px 14px;
+  margin-left: 90px;
+  border: 1px solid rgb(227, 227, 227);
+  position: relative;
+  display: inline-block;
+  background-color: rgb(255, 255, 255);
+  height: auto;
+  line-height: inherit;
+  margin-bottom: 10px;
+}
+
+.form-wrap .input-box-left {
+  margin-left: 150px;
+}
+
+.form-wrap span.input-box {
+  display: inline-block;
+}
+
+.form-wrap .input-box label {
+  position: absolute;
+  top: 14px;
+  left: -90px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.form-wrap .input-box label.label-left {
+  left: -130px;
+}
+
+.form-wrap .input-box input {
+  height: 43px;
+  line-height: 42px;
+  font-size: 14px;
+  width: 400px;
+  border: none;
+}
+
+.form-wrap .check-btn {
+  display: inline-block;
+  height: 44px;
+  line-height: 38px;
+  background: #616161;
+  color: #fff;
+  padding: 0 10px 0;
+  margin-left: 10px;
+}
+
+.form-wrap .btnbox {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.form-wrap .btnbox .btnfb7 {
+  background-color: rgb(11, 38, 110);
+  color: #FFF;
+  height: 60px;
+  line-height: 40px;
+  display: inline-block;
+  padding: 10px 75px;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "ngB" !important;
+}
+
+.form-wrap .btnbox02 a {
+  box-sizing: border-box;
+}

@@ -26,4 +26,5 @@ export const apis = {
   login: loginInfo => instance.post(`/users/login`, loginInfo),
   check_id: userId => instance.post(`/users/checkId`, userId),
   send_email: params => instance.post(`/users/mail`, params),
+  find_users: findData => instance.post(`/users/findUsers`, findData)
 };

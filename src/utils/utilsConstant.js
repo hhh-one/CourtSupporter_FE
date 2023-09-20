@@ -4,7 +4,11 @@ export const URL = {
     LOGIN: '/login',
     JOINACCEPT: '/joinAccept',
     JOIN: '/join',
-    JOINSUCCESS: '/joinSuccess'
+    JOINSUCCESS: '/joinSuccess',
+    IDFIND: '/idFind',
+    PWFIND: '/pwFind',
+    IDSUCCESS: '/idFindSuccess',
+    PWSUCCESS: '/pwFindSuccess',
   }
 }
 

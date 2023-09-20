@@ -82,10 +82,10 @@ const Signin = () => {
                   <div className="find-info">
                     <ul>
                       <li className="find-li">
-                        <a href="#" className="find-id">아이디 찾기</a>
+                        <a className="find-id" onClick={() => navigate(utils.URL.HOME.IDFIND)}>아이디 찾기</a>
                       </li>
                       <li className="find-li">
-                        <a href="#" className="find-pw">비밀번호 찾기</a>
+                        <a className="find-pw" onClick={() => navigate(utils.URL.HOME.PWFIND)} >비밀번호 찾기</a>
                       </li>
                     </ul>
                   </div>

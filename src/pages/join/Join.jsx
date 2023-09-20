@@ -115,6 +115,7 @@ const Join = () => {
   const [usableId, setUsableId] = useState(false);
 
   const checkDuplicateId = (e) => {
+    e.preventDefault();
     // 사용자가 입력한 아이디 가져오기
     const userId = formData.user_id;
 
@@ -383,6 +384,7 @@ const Join = () => {
   const [rightEmailNum, setRightEmailNum] = useState('');
 
   const sendEmail = (e) => {
+    e.preventDefault();
     setClickSendEmail(true);
 
     api.apis.send_email(formData)
@@ -406,6 +408,7 @@ const Join = () => {
 
   //인증번호 확인
   const confirmEmailNum = (e) => {
+    e.preventDefault();
     console.log(emailNum)
     console.log(rightEmailNum)
     console.log(emailNum == rightEmailNum)
@@ -648,6 +651,12 @@ const Join = () => {
     }
   }
 
+  //취소 버튼
+  const handleMain = (e) => {
+    e.preventDefault();
+    window.location.href = 'http://localhost:8788/';
+  }
+
   if (addressRef === null) {
     return;
   }
@@ -680,7 +689,7 @@ const Join = () => {
                 </ol>
 
                 <form>
-                  <h2>회원정보 필수입력</h2>
+                  <h2>회원정보 입력</h2>
                   <p className="required-text">
                     <i className="required-img">
                       <span className="hidden">필수입력</span>
@@ -697,7 +706,7 @@ const Join = () => {
                       <tbody>
                         <tr>
                           <th scope="row">
-                            <label for="userId">
+                            <label htmlFor="userId">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -718,7 +727,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userPassword">
+                            <label htmlFor="userPassword">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -741,7 +750,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userPwCheck">
+                            <label htmlFor="userPwCheck">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -758,7 +767,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userName">
+                            <label htmlFor="userName">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -775,7 +784,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userRRN">
+                            <label htmlFor="userRRN">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -796,7 +805,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userBirth">
+                            <label htmlFor="userBirth">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -813,7 +822,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userEmail">
+                            <label htmlFor="userEmail">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -862,7 +871,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userPhone">
+                            <label htmlFor="userPhone">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -882,7 +891,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userJob">
+                            <label htmlFor="userJob">
                               직업
                             </label>
                           </th>
@@ -918,7 +927,7 @@ const Join = () => {
 
                         <tr>
                           <th scope="row">
-                            <label for="userAccount">
+                            <label htmlFor="userAccount">
                               <i className="required-img">
                                 <span className="hidden">필수입력</span>
                               </i>
@@ -957,7 +966,7 @@ const Join = () => {
                   </div>
 
                   <div className="btnbox btnbox02">
-                    <a href="#none" className="btn4d5">취소</a>
+                    <a href="#none" className="btn4d5" onClick={handleMain}>취소</a>
                     <a href="#none" className="btnfb7" onClick={handleJoinForm}>가입완료</a>
                   </div>
                 </form>

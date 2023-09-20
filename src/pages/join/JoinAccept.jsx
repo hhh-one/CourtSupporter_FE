@@ -31,6 +31,7 @@ const JoinAccept = () => {
     }
   }
 
+  //약관 동의 확인 버튼
   const handleLoginBtn = (e) => {
     e.preventDefault();
 
@@ -41,6 +42,13 @@ const JoinAccept = () => {
       alert('약관 동의는 필수입니다.')
     }
   }
+
+  //취소 버튼
+  const handleMain = (e) => {
+    e.preventDefault();
+    window.location.href = 'http://localhost:8788/';
+  }
+
   return (
     <>
       <Header />
@@ -85,7 +93,7 @@ const JoinAccept = () => {
                       <br />
                       <strong>제1조(목적)</strong>
                       <br />
-                      본 약관은 정부24 (이하 "당 사이트")가 제공하는 모든 서비스(이하 "서비스")의 이용조건 및 절차, 이용자와 당 사이트의 권리, 의무, 책임사항과 기타 필요한 사항을 규정함을
+                      본 약관은 재판조력자 (이하 "당 사이트")가 제공하는 모든 서비스(이하 "서비스")의 이용조건 및 절차, 이용자와 당 사이트의 권리, 의무, 책임사항과 기타 필요한 사항을 규정함을
                       목적으로 합니다.
                       <br />
                       <br />
@@ -330,7 +338,7 @@ const JoinAccept = () => {
 
                     <p className="agree-tit">개인정보 수집 및 이용 동의(필수)</p>
                     <div className="agree-cont" tabIndex="0">
-                      제1조(개인정보의 처리 목적) "정부24"는 <strong className="blue_emph">다음 각 호에서 열거한 목적을 위하여 최소한으로 개인정보를 처리</strong>하고
+                      제1조(개인정보의 처리 목적) "재판조력자"는 <strong className="blue_emph">다음 각 호에서 열거한 목적을 위하여 최소한으로 개인정보를 처리</strong>하고
                       있습니다. 처리한 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를
                       이행하고 있습니다.<br />
                       <strong className="blue_emph">1. 회원가입 및 관리</strong><br />
@@ -340,16 +348,16 @@ const JoinAccept = () => {
                       &nbsp;&nbsp;민원 신청서에 포함된 개인정보는 전자정부법 제9조에 의한 민원사무 처리를 위한 목적으로 민원 접수기관 및 처리기관에서 이용 (민원발급서비스, 민원열람서비스, 최근
                       신청이력)<br />
                       <strong className="blue_emph">3. 생활정보 열람서비스 제공</strong><br />
-                      &nbsp;&nbsp;정부24 회원의 경우, 전자정부법 제9조의2에 의한 본인의 생활정보 열람<br />
+                      &nbsp;&nbsp;재판조력자 회원의 경우, 전자정부법 제9조의2에 의한 본인의 생활정보 열람<br />
                       <strong className="blue_emph">4. 국가보조금 맞춤형서비스 제공</strong><br />
-                      &nbsp;&nbsp;정부24 회원의 경우, 행정·공공기관에서 관리하고 있는 자격정보를 연계하여 받을 수 있는 혜택, 수급정보를 연계하여 이미 받고 있는 혜택 안내 등<br />
+                      &nbsp;&nbsp;재판조력자 회원의 경우, 행정·공공기관에서 관리하고 있는 자격정보를 연계하여 받을 수 있는 혜택, 수급정보를 연계하여 이미 받고 있는 혜택 안내 등<br />
                       <strong className="blue_emph">5. 타 행정기관 시스템 연계정보의 처리</strong><br />
                       &nbsp;&nbsp;다른 행정기관 등이 보유한 자료를 활용하여 민원인이 청구한 행정서비스 및 민원사무 등의 전자적 처리<br />
-                      <strong className="blue_emph">6. 정부24 서비스 향상 및 정책평가</strong><br />
+                      <strong className="blue_emph">6. 재판조력자 서비스 향상 및 정책평가</strong><br />
                       &nbsp;&nbsp;신규 서비스 및 원스톱·맞춤형·선제적 서비스 개발, 인구통계학적 특성에 따른 서비스 분석 및 서비스의 유효성 및 이용 통계 확인 등<br />
                       <br />
-                      제2조(처리하는 개인정보 항목) "정부24"가 처리하는 개인정보 항목은 다음 각 호와 같습니다.<br />
-                      1. 정부24 회원정보<br />
+                      제2조(처리하는 개인정보 항목) "재판조력자"가 처리하는 개인정보 항목은 다음 각 호와 같습니다.<br />
+                      1. 재판조력자 회원정보<br />
                       &nbsp;&nbsp;① 회원정보<br />
                       &nbsp;&nbsp;&nbsp;- 필수항목 : 아이디, 비밀번호, 성명(법인명), 법인등록번호·사업자등록번호(법인인 경우), 주소, 이메일 주소<br />
                       &nbsp;&nbsp;&nbsp;- 선택항목 : 휴대전화번호<br />
@@ -372,9 +380,9 @@ const JoinAccept = () => {
                       5. 국가보조금 맞춤형서비스<br />
                       &nbsp;&nbsp;&nbsp;- 필수항목 : 성명, 자격정보, 수급정보<br />
                       <br /><br />
-                      제3조(개인정보의 처리 및 보유기간) "정부24"에서 처리하는 개인정보는 수집·이용 목적으로 명시한 범위 내에서 처리하며, 개인정보보호법 및 관련 법령에서 정하는 보유기간을 준용하여
+                      제3조(개인정보의 처리 및 보유기간) "재판조력자"에서 처리하는 개인정보는 수집·이용 목적으로 명시한 범위 내에서 처리하며, 개인정보보호법 및 관련 법령에서 정하는 보유기간을 준용하여
                       이행하고 있습니다.<br />
-                      1. 정부24 회원정보<br />
+                      1. 재판조력자 회원정보<br />
                       &nbsp;&nbsp;- 수집근거 : 정보주체의 동의, 전자정부법 시행령 제90조<br />
                       &nbsp;&nbsp;- 보유기간 : <strong className="blue_emph">탈퇴 후 5일까지</strong><br />
                       2. 전자민원 신청이력(상담이력 포함)<br />
@@ -392,7 +400,7 @@ const JoinAccept = () => {
                       ※ 개인정보파일 등록사항 공개는 개인정보보호위원회 개인정보보호 포털(www.privacy.go.kr) → 민원마당 → 개인정보열람 등 요구 → 개인정보파일 목록검색 메뉴를 활용해주시기
                       바랍니다.<br />
                       <br />
-                      제4조(동의를 거부할 권리가 있다는 사실과 동의 거부에 따른 불이익 내용) <strong className="red_emph">이용자는 "정부24"에서 수집하는 개인정보에 대해 동의를 거부할
+                      제4조(동의를 거부할 권리가 있다는 사실과 동의 거부에 따른 불이익 내용) <strong className="red_emph">이용자는 "재판조력자"에서 수집하는 개인정보에 대해 동의를 거부할
                         권리가 있으며, 동의 거부 시에는 회원가입, 민원신청 및 민원발급 서비스, 개인화서비스, 생활정보 서비스, 국가보조금 맞춤형서비스 등이 제한됩니다.</strong><br />
                     </div>
                     <div className="check-area list02">
@@ -407,7 +415,7 @@ const JoinAccept = () => {
                     </div>
 
                     <div className="btnbox btnbox02">
-                      <a href="#none" className="btn4d5">취소</a>
+                      <a href="#none" className="btn4d5" onClick={handleMain}>취소</a>
                       <a href='#none' className="btnfb7" onClick={handleLoginBtn}>확인</a>
                     </div>
                   </form>

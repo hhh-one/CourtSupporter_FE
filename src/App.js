@@ -7,7 +7,6 @@ import * as style from 'style'
 import * as utils from 'utils'
 import * as pages from 'pages'
 import * as hooks from 'hooks'
-import { ScrollToTop } from './hooks';
 
 const App = () => {
   return (
@@ -19,7 +18,10 @@ const App = () => {
           <Route path={utils.URL.HOME.JOINACCEPT} element={<pages.JoinAccept />} />
           <Route path={utils.URL.HOME.JOIN} element={<pages.Join />} />
           <Route path={utils.URL.HOME.JOINSUCCESS} element={<pages.JoinSuccess />} />
-          <Route path={'/address'} element={<hooks.addressHook />}></Route>
+          <Route path={utils.URL.HOME.IDFIND} element={<pages.FindId />} />
+          <Route path={utils.URL.HOME.PWFIND} element={<pages.FindPw />} />
+          <Route path={utils.URL.HOME.IDSUCCESS} element={<pages.FindIdSuccess />} />
+          <Route path={utils.URL.HOME.PWSUCCESS} element={<pages.FindPwSuccess />} />
         </Routes>
       </Router>
     </ThemeProvider>
