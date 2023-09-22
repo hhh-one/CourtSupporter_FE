@@ -41,14 +41,17 @@ const FindPw = () => {
     setEmailNum(inputValue);
   }
 
+  const clickEnterKey = (e) => {
+    if (e.key === 'Enter') {
+      sendEmail();
+    }
+  }
+
   //인증번호 전송
   const [clickSendEmail, setClickSendEmail] = useState(false);
   const [rightEmailNum, setRightEmailNum] = useState('');
 
   const sendEmail = (e) => {
-    e.preventDefault();
-    //유효성 검사 처리 해야될 부분
-
     api.apis.find_users(inputData)
       .then(response => {
         console.log(response.data)
@@ -74,9 +77,14 @@ const FindPw = () => {
       })
   }
 
+  const clickEnterKeyConfirm = (e) => {
+    if (e.key === 'Enter') {
+      confirmEmailNum();
+    }
+  }
+
   //인증번호 확인
   const confirmEmailNum = (e) => {
-    e.preventDefault();
 
     if (!clickSendEmail) {
       alert('인증번호를 전송해주세요')
@@ -114,20 +122,20 @@ const FindPw = () => {
                 <div>
                   <span className="input-box">
                     <label for="user-email">이메일</label>
-                    <input type="text" id="user-email" name='user_email' value={inputData.user_email} onChange={onChangeEmail} />
+                    <input type="text" id="user-email" name='user_email' value={inputData.user_email} onChange={onChangeEmail} onKeyUp={clickEnterKey} />
                   </span>
                   <span>
-                    <a href="#none" id="sendEmail" className="check-btn" onClick={sendEmail}>인증번호 발송</a>
+                    <a id="sendEmail" className="check-btn" onClick={sendEmail}>인증번호 발송</a>
                   </span>
                 </div>
                 {clickSendEmail &&
                   <div className="input-box">
                     <label for="user-email-num">인증번호</label>
-                    <input type="text" id="user-email-num" value={emailNum} onChange={onChangeEmailNum} />
+                    <input type="text" id="user-email-num" value={emailNum} onChange={onChangeEmailNum} onKeyUp={clickEnterKeyConfirm} />
                   </div>
                 }
                 <div class="btnbox btnbox02">
-                  <a href="#none" class="btnfb7" onClick={confirmEmailNum}>확인</a>
+                  <a class="btnfb7" onClick={confirmEmailNum}>확인</a>
                 </div>
               </div>
             </div>

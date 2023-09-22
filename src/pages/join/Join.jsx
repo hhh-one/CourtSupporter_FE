@@ -379,6 +379,31 @@ const Join = () => {
     setEmailProvider(selectedValue); // 선택한 값을 상태로 설정
   };
 
+  const onChangeCustomEmail = (e) => {
+    const emailRegex = /^[A-Za-z0-9]+([-_.][A-Za-z0-9]+)*\.[A-Za-z]{2,}$/;
+
+    setCustomEmail(e.target.value);
+    setFormData((prevFormData) => (
+      {
+        ...prevFormData,
+        user_email: `${emailId}@${e.target.value}`,
+      }));
+
+    if (emailRegex.test(e.target.value)) {
+      setIsEmail2(true);
+      setErrorState({
+        ...errorState,
+        email2: { isRight: true, message: '' }
+      });
+    } else {
+      setIsEmail2(false);
+      setErrorState({
+        ...errorState,
+        email2: { isRight: false, message: '이메일 형식에 맞게 입력해주세요' }
+      });
+    }
+  }
+
   //이메일 인증번호 전송
   const [clickSendEmail, setClickSendEmail] = useState(false);
   const [rightEmailNum, setRightEmailNum] = useState('');
@@ -553,9 +578,39 @@ const Join = () => {
   }
 
   //계좌 은행 유효성 검사
-  const onChangeBank = (e) => {
+  const [selectBank, setSelectBank] = useState('');
+
+  const handleSelectBankChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: `${value}`,
+    }));
+
+    if (value === '') {
+      // 선택한 값이 빈 문자열인 경우 직접 입력 가능
+      setCustomBank('');
+      setErrorState({
+        ...errorState,
+        user_bank: { isRight: false, message: '은행을 선택/입력해주세요' }
+      });
+    } else {
+      // 선택한 값이 빈 문자열이 아닌 경우 해당 값을 입력란에 설정하고 입력란 비활성화
+      setCustomBank(value);
+      setErrorState({
+        ...errorState,
+        user_bank: { isRight: true, message: '' }
+      });
+    }
+    setSelectBank(value);
+  };
+
+  const onChangeCustomBank = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setCustomBank(value);
+
     if (value.length > 1) {
       setIsCustomBank(true);
       setErrorState({
@@ -834,15 +889,7 @@ const Join = () => {
                             <input type="text" title="전자우편아이디" className='input-email1 input-email-size' name="email1" id="userEmail" value={emailId} onChange={onChangeEmailId} />
                             <span>@</span>
                             {emailProvider === '' ? <input type="text" title="전자우편서비스" name="email2" id="email-provider" value={customEmail}
-                              onChange={(e) => {
-                                setCustomEmail(e.target.value);
-                                setFormData((prevFormData) => ({ ...prevFormData, user_email: `${emailId}@${e.target.value}`, }));
-                                setIsEmail2(true);
-                                setErrorState({
-                                  ...errorState,
-                                  email2: { isRight: true, message: '' }
-                                });
-                              }} /> : null}
+                              onChange={onChangeCustomEmail} /> : null}
                             <select className="selC" name="email_select" id="email_select" title="전자우편서비스선택" value={emailProvider} onChange={handleSelectEmailChange}>
                               <option value='hanmail.net'>hanmail.net</option>
                               <option value='lycos.co.kr'>lycos.co.kr</option>
@@ -919,7 +966,11 @@ const Join = () => {
                               <br />
                               <input type="text" name='user_ar_detail' id="userAddressDetail" maxLength="50" className="input-addr-w" placeholder="상세주소" value={formData.user_ar_detail} onChange={onChangeAddrDetail} />
                               <div ref={addressRef}>
-                                {isAddressOpen && <div><S.PostCode onComplete={handleDaumPostcodeComplete} autoClose /></div>}
+                                {isAddressOpen &&
+                                  <div>
+                                    <S.PostCode onComplete={handleDaumPostcodeComplete} autoClose />
+                                    <S.ModalBackDrop></S.ModalBackDrop>
+                                  </div>}
                               </div>
                             </span>
                           </td>
@@ -940,8 +991,8 @@ const Join = () => {
                             {!errorState['user_bank_account'].isRight && <div className="error-text-red">{errorState['user_bank_account'].message}</div>}
                             <div className='account-div'>
                               <span className='account-text3'>은행명</span>
-                              {isCustomBank ? <input title="은행명" name="user_bank" type="text" id="user_bank" value={customBank} /> : null}
-                              <select className="selC" name="user_bank" id="account_select" title="계좌정보선택" value={formData.user_bank} onChange={onChangeBank}>
+                              {selectBank == '' ? <input title="은행명" name="user_bank" type="text" id="user_bank" value={customBank} onChange={onChangeCustomBank} /> : null}
+                              <select className="selC" name="user_bank" id="account_select" title="계좌정보선택" value={selectBank} onChange={handleSelectBankChange}>
                                 <option value='국민'>국민</option>
                                 <option value='신한'>신한</option>
                                 <option value='우리'>우리</option>
@@ -987,11 +1038,20 @@ const S = {
     left: calc(50vw - 300px);
     height: 460px !important;
     width: 600px !important;
+    z-index: 100;
   `,
   Wrap: styled.div`
     position: relative;
   `,
+  ModalBackDrop: styled.div`
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  `
 }
 
 export default Join;
-

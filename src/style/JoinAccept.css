@@ -149,7 +149,7 @@
   font-size: 13px;
   line-height: 1.5;
   letter-spacing: -1px;
-  font-weight: bold;
+  font-weight: 400;
   color: #333;
 }
 
@@ -181,7 +181,6 @@
   display: inline-block;
   padding: 0 25px;
   vertical-align: middle;
-  font-family: "ngB" !important;
 }
 
 .accept-contents .btnbox .btn4d5 {
@@ -193,7 +192,6 @@
   display: inline-block;
   padding: 0 25px;
   vertical-align: middle;
-  font-family: "ngB" !important;
 }
 
 .accept-contents .btnbox02 a {

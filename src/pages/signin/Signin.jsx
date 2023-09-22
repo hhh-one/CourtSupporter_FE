@@ -18,7 +18,29 @@ const Signin = () => {
     member_role: ""
   })
 
+  const clickEnterKeyID = (e) => {
+    const idInput = document.getElementById('user-id');
+    const pwInput = document.getElementById('user-pw');
+
+    if (e.key === 'Enter') {
+      if (loginInfo.member_id === '') {
+        idInput.focus();
+        alert('아이디를 입력해주세요')
+        return;
+      }
+      pwInput.focus();
+    }
+  }
+
+  const clickEnterKey = (e) => {
+    if (e.key === 'Enter') {
+      login();
+    }
+  }
+
   const login = () => {
+    const idInput = document.getElementById('user-id');
+
     api.apis.login(loginInfo).then(response => {
       setCookie('Authorization', response.data.accessToken, {
         path: '/',
@@ -35,6 +57,7 @@ const Signin = () => {
         member_role: ''
       })
       console.log(err);
+      idInput.focus();
       alert('로그인에 실패하였습니다. 다시 한 번 시도해주세요.')
     })
   }
@@ -57,7 +80,7 @@ const Signin = () => {
                   <input type="text" onChange={e => setLoginInfo({
                     ...loginInfo,
                     member_id: e.target.value
-                  })} id="user-id" placeholder="아이디를 입력하세요" value={loginInfo.member_id} />
+                  })} id="user-id" placeholder="아이디를 입력하세요" value={loginInfo.member_id} onKeyUp={clickEnterKeyID} />
                 </div>
                 <p className="input-info">영문, 숫자 조합하여 4~16자 입력</p>
                 <div className="input-box">
@@ -65,7 +88,7 @@ const Signin = () => {
                   <input type="password" onChange={e => setLoginInfo({
                     ...loginInfo,
                     member_password: e.target.value
-                  })} id="user-pw" placeholder="비밀번호를 입력하세요" value={loginInfo.member_password} />
+                  })} id="user-pw" placeholder="비밀번호를 입력하세요" value={loginInfo.member_password} onKeyUp={clickEnterKey} />
                 </div>
                 <div className="signin-btn-wrap">
                   <button type="button" onClick={() => login()} className="button-type-blue login-btn">아이디 로그인</button>
@@ -74,7 +97,8 @@ const Signin = () => {
               <div className="signin-other-wrap">
                 <div className="other-box">
                   <span className="join-tap">
-                    <a onClick={() => {
+                    <a href='#none' onClick={(e) => {
+                      e.preventDefault();
                       window.scrollTo(0, 0);
                       navigate(utils.URL.HOME.JOINACCEPT)
                     }}>회원가입</a>
@@ -82,10 +106,10 @@ const Signin = () => {
                   <div className="find-info">
                     <ul>
                       <li className="find-li">
-                        <a className="find-id" onClick={() => navigate(utils.URL.HOME.IDFIND)}>아이디 찾기</a>
+                        <a href='#none' className="find-id" onClick={(e) => { e.preventDefault(); navigate(utils.URL.HOME.IDFIND) }}>아이디 찾기</a>
                       </li>
                       <li className="find-li">
-                        <a className="find-pw" onClick={() => navigate(utils.URL.HOME.PWFIND)} >비밀번호 찾기</a>
+                        <a href='#none' className="find-pw" onClick={(e) => { e.preventDefault(); navigate(utils.URL.HOME.PWFIND) }} >비밀번호 찾기</a>
                       </li>
                     </ul>
                   </div>

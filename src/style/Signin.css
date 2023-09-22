@@ -74,7 +74,7 @@
   line-height: 30px;
   font-size: 12px;
   letter-spacing: -1px;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 .signin .form-wrap .id-save {
@@ -265,7 +265,7 @@
   word-break: keep-all;
   line-height: 1.7;
   letter-spacing: -1px;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 .signin .signin-wrap .infor-text-box .inbox-text::before {
