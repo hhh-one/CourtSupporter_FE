@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/
+    destination: /home/ubuntu/frontend/
     overwrite: yes
 
 hooks:
   ApplicationStart:
-    - location: deploy_fe/deploy.sh
+    - location: frontend/deploy_fe/deploy.sh
       runas: ubuntu
