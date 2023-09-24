@@ -49,29 +49,29 @@ const Header = () => {
       <div className="fix-header">
         <div className={scrollY < 20 ? "header-menu-wrap" : 'header-menu-wrap scrolled'} style={{ height: `${menuHeight}px` }}>
           <div className="logo-wrap">
-            <a href="http://localhost:8788/">
+            <a href="http://3.36.109.192/">
               <img src={require('images/logo_.png').default} alt="재판조력자" />
             </a>
           </div>
 
           <div className="menu-wrap" onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
             <ul class="menus">
-              <a href="http://localhost:8788/announce/announceList">
+              <a href="http://3.36.109.192/announce/announceList">
                 <li class="menu01">
                   <span class="">조력자등재신청</span>
                 </li>
               </a>
-              <a href="http://localhost:8788/guide/guideInfo">
+              <a href="http://3.36.109.192/guide/guideInfo">
                 <li class="menu02">
                   <span class="">조력자신청안내</span>
                 </li>
               </a>
-              <a href="http://localhost:8788/usermypage/usermypage">
+              <a href="http://3.36.109.192/usermypage/usermypage">
                 <li class="menu03">
                   <span class="">My Page</span>
                 </li>
               </a>
-              <a href="http://localhost:8788/announce/announceList">
+              <a href="http://3.36.109.192/announce/announceList">
                 <li class="menu04">
 
                   <span class="">공지사항</span>
@@ -83,40 +83,40 @@ const Header = () => {
               <div class="detail-menu-wrap">
                 <div class="detail-menus">
                   <ul class="detail-menu01">
-                    <a href="http://localhost:8788/announce/announceList">
+                    <a href="http://3.36.109.192/announce/announceList">
                       <h2>조력자등재신청</h2>
                     </a>
                   </ul>
                   <ul class="detail-menu02">
-                    <a href="http://localhost:8788/guide/guideInfo">
+                    <a href="http://3.36.109.192/guide/guideInfo">
                       <h2>조력자 제도안내</h2>
                     </a>
-                    <a href="http://localhost:8788/guide/guideProcedure">
+                    <a href="http://3.36.109.192/guide/guideProcedure">
                       <h2>조력자 신청절차안내</h2>
                     </a>
                   </ul>
                   <ul class="detail-menu03">
-                    <a href="http://localhost:8788/usermypage/usermypage_applicationlist">
+                    <a href="http://3.36.109.192/usermypage/usermypage_applicationlist">
                       <h2>나의 신청현황</h2>
                     </a>
-                    <a href="http://localhost:8788/usermypage/usermypage_activitylist">
+                    <a href="http://3.36.109.192/usermypage/usermypage_activitylist">
                       <h2>나의 활동내역</h2>
                     </a>
-                    <a href="http://localhost:8788/usermypage/usermypage">
+                    <a href="http://3.36.109.192/usermypage/usermypage">
                       <h2>나의 정보관리</h2>
                     </a>
-                    <a href="http://localhost:8788/usermypage/usermypage_pauselist">
+                    <a href="http://3.36.109.192/usermypage/usermypage_pauselist">
                       <h2>중지/해제신청 관리</h2>
                     </a>
                   </ul>
                   <ul class="detail-menu04">
-                    <a href="http://localhost:8788/announce/announceList">
+                    <a href="http://3.36.109.192/announce/announceList">
                       <h2>모집공고</h2>
                     </a>
-                    <a href="http://localhost:8788/notice/noticeList">
+                    <a href="http://3.36.109.192/notice/noticeList">
                       <h2>공지사항</h2>
                     </a>
-                    <a href="http://localhost:8788/faq/faqList">
+                    <a href="http://3.36.109.192/faq/faqList">
                       <h2>FAQ</h2>
                     </a>
                   </ul>
