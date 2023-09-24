@@ -36,7 +36,7 @@ jobs:
         run: yarn build
 
       - name: Make zip file
-        run: zip -r ./frontend/$GITHUB_SHA.zip .
+        run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
       
       - name: Configure AWS credentials
