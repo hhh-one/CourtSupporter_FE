@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN mkdir ./dist
 
-ADD ./dist ./dist
+ADD . .
 
 RUN npm install yarn
 RUN yarn install
