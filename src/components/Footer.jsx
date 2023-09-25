@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="footer">
         <div id="footer-box">
           <div className="logo-footer">
-            <img src={require('images/logo_black_tr.png').default} alt="재판조력자" />
+            <img src={require('http://43.202.60.221/img/logo_black_tr.png').default} alt="재판조력자" />
           </div>
           <ul className="footer-menu">
             <li></li>
