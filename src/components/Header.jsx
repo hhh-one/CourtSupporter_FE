@@ -49,30 +49,30 @@ const Header = () => {
       <div className="fix-header">
         <div className={scrollY < 20 ? "header-menu-wrap" : 'header-menu-wrap scrolled'} style={{ height: `${menuHeight}px` }}>
           <div className="logo-wrap">
-            <a href="http://43.202.60.221/">
+            <a href="http://3.34.74.233/">
               <img src={require('images/logo_.png').default} alt="재판조력자" />
             </a>
           </div>
 
           <div className="menu-wrap" onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-            <ul class="menus">
-              <a href="http://43.202.60.221/announce/announceList">
-                <li class="menu01">
+            <ul class="usermenus">
+              <a href="http://3.34.74.233/announce/announceList">
+                <li class="menu01 longline">
                   <span class="">조력자등재신청</span>
                 </li>
               </a>
-              <a href="http://43.202.60.221/guide/guideInfo">
-                <li class="menu02">
+              <a href="http://3.34.74.233/guide/guideInfo">
+                <li class="menu02 longline">
                   <span class="">조력자신청안내</span>
                 </li>
               </a>
-              <a href="http://43.202.60.221/usermypage/usermypage">
-                <li class="menu03">
+              <a href="http://3.34.74.233/usermypage/usermypage">
+                <li class="menu03 line">
                   <span class="">My Page</span>
                 </li>
               </a>
-              <a href="http://43.202.60.221/announce/announceList">
-                <li class="menu04">
+              <a href="http://3.34.74.233/announce/announceList">
+                <li class="menu04 line">
 
                   <span class="">공지사항</span>
                 </li>
@@ -82,42 +82,42 @@ const Header = () => {
             <nav>
               <div class="detail-menu-wrap">
                 <div class="detail-menus">
-                  <ul class="detail-menu01">
-                    <a href="http://43.202.60.221/announce/announceList">
-                      <h2>조력자등재신청</h2>
+                  <ul class="detail-menu01 userdetailmenu01">
+                    <a href="http://3.34.74.233/announce/announceList">
+                      <li>조력자등재신청</li>
                     </a>
                   </ul>
-                  <ul class="detail-menu02">
-                    <a href="http://43.202.60.221/guide/guideInfo">
-                      <h2>조력자 제도안내</h2>
+                  <ul class="detail-menu02 userdetailmenu02">
+                    <a href="http://3.34.74.233/guide/guideInfo">
+                      <li>조력자 제도안내</li>
                     </a>
-                    <a href="http://43.202.60.221/guide/guideProcedure">
-                      <h2>조력자 신청절차안내</h2>
-                    </a>
-                  </ul>
-                  <ul class="detail-menu03">
-                    <a href="http://43.202.60.221/usermypage/usermypage_applicationlist">
-                      <h2>나의 신청현황</h2>
-                    </a>
-                    <a href="http://43.202.60.221/usermypage/usermypage_activitylist">
-                      <h2>나의 활동내역</h2>
-                    </a>
-                    <a href="http://43.202.60.221/usermypage/usermypage">
-                      <h2>나의 정보관리</h2>
-                    </a>
-                    <a href="http://43.202.60.221/usermypage/usermypage_pauselist">
-                      <h2>중지/해제신청 관리</h2>
+                    <a href="http://3.34.74.233/guide/guideProcedure">
+                      <li>조력자 신청절차안내</li>
                     </a>
                   </ul>
-                  <ul class="detail-menu04">
-                    <a href="http://43.202.60.221/announce/announceList">
-                      <h2>모집공고</h2>
+                  <ul class="detail-menu03 userdetailmenu03">
+                    <a href="http://3.34.74.233/usermypage/usermypage_applicationlist">
+                      <li>나의 신청현황</li>
                     </a>
-                    <a href="http://43.202.60.221/notice/noticeList">
-                      <h2>공지사항</h2>
+                    <a href="http://3.34.74.233/usermypage/usermypage_activitylist">
+                      <li>나의 활동내역</li>
                     </a>
-                    <a href="http://43.202.60.221/faq/faqList">
-                      <h2>FAQ</h2>
+                    <a href="http://3.34.74.233/usermypage/usermypage">
+                      <li>나의 정보관리</li>
+                    </a>
+                    <a href="http://3.34.74.233/usermypage/usermypage_pauselist">
+                      <li>중지/해제신청 관리</li>
+                    </a>
+                  </ul>
+                  <ul class="detail-menu04 userdetailmenu04">
+                    <a href="http://3.34.74.233/announce/announceList">
+                      <li>모집공고</li>
+                    </a>
+                    <a href="http://3.34.74.233/notice/noticeList">
+                      <li>공지사항</li>
+                    </a>
+                    <a href="http://3.34.74.233/faq/faqList">
+                      <li>FAQ</li>
                     </a>
                   </ul>
                 </div>

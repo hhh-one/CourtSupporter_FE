@@ -49,7 +49,7 @@ const Signin = () => {
         path: '/',
       });
 
-      window.location.href = 'http://43.202.60.221/';
+      window.location.href = 'http://3.34.74.233/';
     }).catch(err => {
       setLoginInfo({
         member_id: '',
