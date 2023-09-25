@@ -50,7 +50,7 @@ const Header = () => {
         <div className={scrollY < 20 ? "header-menu-wrap" : 'header-menu-wrap scrolled'} style={{ height: `${menuHeight}px` }}>
           <div className="logo-wrap">
             <a href="http://43.202.60.221/">
-              <img src={require('http://43.202.60.221/img/logo_.png').default} alt="재판조력자" />
+              <img src={require('images/logo_.png').default} alt="재판조력자" />
             </a>
           </div>
 
@@ -128,7 +128,7 @@ const Header = () => {
       </div>
       <div class={scrollY < 20 ? "to-the-top-wrap" : 'to-the-top-wrap active'} onClick={clickToTheTop}>
         <a>
-          <img src={require('http://43.202.60.221/img/top_grey.png').default} />
+          <img src={require('images/top_grey.png').default} />
         </a>
       </div>
     </>
