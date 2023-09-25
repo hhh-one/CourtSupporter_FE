@@ -21,7 +21,7 @@
  /* 상단 메뉴 바 스타일 */
  .header-menu-wrap {
    /* background-color: #000; */
-   background-image: url(http://3.34.74.233:8080/img/line.png);
+   background-image: url(http://3.34.74.233/img/mainheaderLine.png/);
    background-size: 1280px;
    box-shadow: 0px 3px 5px -2px rgba(0, 0, 0, 0.16);
    position: fixed;
@@ -306,7 +306,7 @@
 
  .footer-menu {
    margin-top: 20px;
-   padding: 25px 0 0;
+   padding-top: 25px;
  }
 
  .footer-menu li {
@@ -319,7 +319,7 @@
  }
 
  .footer-notice span {
-   padding-top: 60px;
+   margin-bottom: 15px;
    display: block;
    font-weight: bold;
    color: #000;
@@ -327,6 +327,7 @@
    text-align: right;
    /* 오른쪽으로 정렬 */
  }
+
 
  address {
    display: block;
