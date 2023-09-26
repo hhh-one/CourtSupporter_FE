@@ -6,7 +6,7 @@
 
  .login-wrap {
    float: right;
-   margin: 20px 30px;
+   margin: 17px 30px;
    padding: 0 25px;
    border-left: 1px solid #d1d1d1;
    border-right: 1px solid #d1d1d1;
@@ -42,7 +42,7 @@
 
  .logo-wrap {
    float: left;
-   padding-left: 20px;
+   padding-left: 300px;
  }
 
  .usermenus {
@@ -74,13 +74,14 @@
  /* 메뉴 스타일 */
  .menu-wrap {
    float: right;
+   padding-right: 300px;
  }
 
  .menus {
    line-height: 100px;
    height: 100px;
    list-style: none;
-   display: flex;
+   display: block;
    margin: 0;
    padding: 0;
    justify-content: space-between;
@@ -94,9 +95,9 @@
  .menus li span {
    text-decoration: none;
    color: #333;
-   font-weight: bold;
+   font-weight: 500;
    font-size: 20px;
-   margin: 0 60px;
+   margin: 0 45px;
  }
 
  /***********************************************************************/
@@ -210,14 +211,6 @@
    margin: 0 60px;
  } */
 
-
- .detail-menus li {
-   font-size: 17px;
-   margin-bottom: 20px;
-   font-weight: bold;
-   text-align: center;
-   text-decoration: none;
- }
 
  .detail-menus li {
    font-size: 17px;
