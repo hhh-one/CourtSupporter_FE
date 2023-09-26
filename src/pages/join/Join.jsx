@@ -681,15 +681,15 @@ const Join = () => {
         return
       }
 
-      if (!clickSendEmail) {
-        alert('이메일로 인증번호 발송은 필수입니다')
-        return
-      }
+      // if (!clickSendEmail) {
+      //   alert('이메일로 인증번호 발송은 필수입니다')
+      //   return
+      // }
 
-      if (!clickEmailNum) {
-        alert('알맞은 인증번호를 입력해주세요')
-        return
-      }
+      // if (!clickEmailNum) {
+      //   alert('알맞은 인증번호를 입력해주세요')
+      //   return
+      // }
 
       api.apis.insert_users(formData)
         .then(response => {
@@ -901,10 +901,10 @@ const Join = () => {
                               <option value='nate.com'>nate.com</option>
                               <option value='' selected="selected">직접입력</option>
                             </select>
-                            <span className="id-check-btn">
+                            {/* <span className="id-check-btn">
                               <a href="#" id="EmailCheck" className="check-btn" onClick={sendEmail}>인증번호 발송</a>
-                            </span>
-                            {clickSendEmail && <div className='input-email-num'>
+                            </span> */}
+                            {/* {clickSendEmail && <div className='input-email-num'>
 
                               <input type='text' placeholder='인증번호 입력' value={emailNum} onChange={onChangeEmailNum} />
 
@@ -912,7 +912,7 @@ const Join = () => {
                                 <a href="#" id="EmailCheck" className="check-btn" onClick={confirmEmailNum}>확인</a>
                               </span>
 
-                              {!emailNumErrorState.isRight && <span className="error-text-red">{emailNumErrorState.message}</span>}</div>}
+                              {!emailNumErrorState.isRight && <span className="error-text-red">{emailNumErrorState.message}</span>}</div>} */}
                           </td>
                         </tr>
 
